@@ -82,7 +82,7 @@
 <div class="kv"><div class="k">Faculty</div><div class="v">Health Science</div></div>
 <div class="kv"><div class="k">Department</div><div class="v">Medical Laboratory Science</div></div>
 
-<div class="kv"><div class="k">Level</div><div class="v">400</div></div>
+<div class="kv"><div class="k">Level</div><div class="v">500</div></div>
 <div class="kv"><div class="k">Units</div><div class="v">4</div></div>
 <div class="kv"><div class="k">Semester</div><div class="v">Second</div></div>
 <div class="kv"><div class="k">Duration</div><div class="v">60 minutes</div></div>
@@ -129,7 +129,7 @@
 <h3>Enter Exam Code</h3>
 <p>The code is one‑time use. Your device will remember access for future sessions.</p>
 <div class="row">
-<input autocomplete="one-time-code" id="examCode" placeholder="MLS402-XXXXXX" type="text"/>
+<input autocomplete="one-time-code" id="examCode" placeholder="MLS502-XXXXXX" type="text"/>
 <button class="primary" id="verifyBtn">Start Exam</button>
 </div>
 <div class="err" id="codeErr">Say cheeeeeeese chakam!📸</div>
@@ -149,1674 +149,2125 @@
   const db = firebase.firestore();
 
   const LS = window.localStorage;
-  const LS_KEY = "greatsax_mls402_exam_unlocked";
-  const LS_CODE = "greatsax_mls402_exam_code";
-  const LS_START = "greatsax_mls402_exam_start";
-  const LS_ANS = "greatsax_mls402_answers";
+  const LS_KEY = "greatsax_mls502_exam_unlocked";
+  const LS_CODE = "greatsax_mls502_exam_code";
+  const LS_START = "greatsax_mls502_exam_start";
+  const LS_ANS = "greatsax_mls502_answers";
 
   const RAW_QUESTIONS = [
   {
-    "q": "The anticoagulant of choice for glucose estimation iS:",
+    "q": "A 25-year-old male presents with pallor and jaundice. Peripheral smear shows spherocytes. The direct Coombs test is positive. Which is the most likely diagnosis?",
     "options": [
-      "Heparin",
-      "Sodium fluoride",
-      "EDTA",
-      "Citrate"
+      "Hereditary spherocytosis",
+      "Autoimmune hemolytic anemia",
+      "G6PD deficiency",
+      "Sickle cell disease"
     ],
     "answer": 1,
-    "exp": "Fluoride inhibits enolase and stops glycolysis, preserving true glucose levels."
+    "exp": "The positive direct Coombs test indicates immune-mediated hemolysis, characteristic of autoimmune hemolytic anemia (AIHA). Spherocytes are seen due to antibody-mediated red cell destruction. Hereditary spherocytosis typically has a negative Coombs test, G6PD deficiency shows bite cells/Heinz bodies, and sickle cell disease shows sickle-shaped cells, not spherocytes."
   },
   {
-    "q": "The reference method for blood glucose estimation is:",
+    "q": "Which of the following findings best distinguishes iron deficiency anemia from thalassemia trait?",
     "options": [
-      "Folin-Wu",
-      "Trinder's method",
-      "Hexokinase method",
-      "Glucose oxidase method"
+      "Low MCV",
+      "Target cells",
+      "Normal serum ferritin",
+      "Hypochromia"
     ],
     "answer": 2,
-    "exp": "Hexokinase is highly specific and regarded as the reference method for glucose."
+    "exp": "Normal or high serum ferritin distinguishes thalassemia trait from iron deficiency anemia (IDA), where ferritin is low due to depleted iron stores. Both conditions show low MCV and hypochromia, and target cells are seen in thalassemia but not specific enough to differentiate."
   },
   {
-    "q": "Which electrolyte is the major intracellular cation?",
+    "q": "Heinz bodies are best visualized with:",
     "options": [
-      "Sodium",
-      "Potassium",
-      "Calcium",
-      "Magnesium"
+      "Leishman stain",
+      "Supravital stain (e.g., crystal violet)",
+      "PAS stain",
+      "Prussian blue stain"
     ],
     "answer": 1,
-    "exp": "Potassium is the dominant intracellular cation, vital for resting membrane potential."
+    "exp": "Heinz bodies, denatured hemoglobin in RBCs, are best seen with supravital stains like crystal violet or new methylene blue, which highlight these inclusions in viable cells. Leishman and PAS stains are not specific for Heinz bodies, and Prussian blue stains iron."
   },
   {
-    "q": "Anion gap is mainly used in:",
+    "q": "Which cytogenetic abnormality is most specific for chronic myeloid leukemia (CML)?",
     "options": [
-      "Electrolyte balance",
-      "Liver disease",
-      "Renal clearance",
-      "Thyroid function"
-    ],
-    "answer": 0,
-    "exp": "Anion gap helps detect unmeasured anions, important in metabolic acidosis."
-  },
-  {
-    "q": "The enzyme most specific for acute pancreatitis is:",
-    "options": [
-      "AST",
-      "Lipase",
-      "Amylase",
-      "ALP"
-    ],
-    "answer": 1,
-    "exp": "Lipase is more specific than amylase for pancreatitis and stays elevated longer."
-  },
-  {
-    "q": "Serum creatinine is used to assess:",
-    "options": [
-      "Liver function",
-      "Kidney function",
-      "Thyroid function",
-      "Pancreatic function"
-    ],
-    "answer": 1,
-    "exp": "Kidney function is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "The storage form of iron is:",
-    "options": [
-      "Transferrin",
-      "Ferritin",
-      "Hemosiderin",
-      "Hemoglobin"
-    ],
-    "answer": 1,
-    "exp": "Ferritin is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Which lipoprotein is considered \"bad cholesterol\"?",
-    "options": [
-      "HDL",
-      "LDL",
-      "VLDL",
-      "Chylomicron"
-    ],
-    "answer": 1,
-    "exp": "LDL delivers cholesterol to tissues and promotes atheroma formation (“bad cholesterol”)."
-  },
-  {
-    "q": "The major buffer system in blood is:",
-    "options": [
-      "Protein buffer",
-      "Hemoglobin buffer",
-      "Phosphate buffer",
-      "Bicarbonate buffer"
-    ],
-    "answer": 3,
-    "exp": "Bicarbonate buffer is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "HbA1c reflects glycemic control over:",
-    "options": [
-      "1 week",
-      "1 month",
-      "2-3 months",
-      "6 months"
+      "t(8;21)",
+      "t(15;17)",
+      "t(9;22)",
+      "t(14;18)"
     ],
     "answer": 2,
-    "exp": "HbA1c reflects average glycemia over ~8–12 weeks (RBC lifespan)."
+    "exp": "The t(9;22) translocation, known as the Philadelphia chromosome, is the hallmark of CML, resulting in the BCR-ABL1 fusion gene. Other translocations are associated with AML (t(8;21), t(15;17)) or follicular lymphoma (t(14;18))."
   },
   {
-    "q": "Which hormone increases blood calcium?",
+    "q": "A patient has prolonged PT and aPTT with normal thrombin time. Which deficiency is most likely?",
     "options": [
-      "Insulin",
-      "Calcitonin",
-      "Parathyroid hormone",
-      "Cortisol"
-    ],
-    "answer": 2,
-    "exp": "Parathyroid hormone is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "ALT is more specific for:",
-    "options": [
-      "Cardiac muscle",
-      "Liver",
-      "Pancreas",
-      "Kidney"
-    ],
-    "answer": 1,
-    "exp": "Liver is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "The end product of purine metabolism is:",
-    "options": [
-      "Urea",
-      "Creatinine",
-      "Uric acid",
-      "Ammonia"
-    ],
-    "answer": 2,
-    "exp": "Key dipstick targets: protein, glucose, ketones, blood, nitrite/leukocyte esterase for UTI screening."
-  },
-  {
-    "q": "Hyperkalemia may result from:",
-    "options": [
-      "Prolonged fasting",
-      "Hemolysis of sample",
-      "Hypoglycemia",
-      "Dehydration"
-    ],
-    "answer": 1,
-    "exp": "Hemolysis of sample is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "The main protein in plasma is:",
-    "options": [
-      "Fibrinogen",
-      "Globulin",
-      "Albumin",
-      "Transferrin"
-    ],
-    "answer": 2,
-    "exp": "Albumin is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Which enzyme is elevated in prostate cancer?",
-    "options": [
-      "Alkaline phosphatase",
-      "Acid phosphatase",
-      "Amylase",
-      "CK-MB"
-    ],
-    "answer": 1,
-    "exp": "Acid phosphatase is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Jaffe's method is used to estimate:",
-    "options": [
-      "Uric acid",
-      "Urea",
-      "Creatinine",
-      "Protein"
-    ],
-    "answer": 2,
-    "exp": "Creatinine is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Hypernatremia means:",
-    "options": [
-      "Low sodium",
-      "High sodium",
-      "Low potassium",
-      "High potassium"
-    ],
-    "answer": 1,
-    "exp": "High sodium is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Thyroxine (T4) is mainly bound to:",
-    "options": [
-      "Albumin",
-      "Transferrin",
-      "Thyroxine-binding globulin",
+      "Factor VII",
+      "Factor VIII",
+      "Factor X",
       "Fibrinogen"
     ],
     "answer": 2,
-    "exp": "Free T4 reflects biologically active hormone; interpret with TSH for thyroid status."
+    "exp": "Prolonged PT and aPTT with normal thrombin time suggest a deficiency in the common pathway (Factors X, V, II). Factor X deficiency is most likely. Factor VII deficiency affects only PT, Factor VIII affects only aPTT, and fibrinogen deficiency prolongs thrombin time."
   },
   {
-    "q": "Which vitamin is essential for calcium absorption?",
+    "q": "In paroxysmal nocturnal hemoglobinuria (PNH), which diagnostic test is most specific?",
     "options": [
-      "Vitamin A",
-      "Vitamin B12",
-      "Vitamin D",
-      "Vitamin K"
+      "Ham's test",
+      "Sucrose lysis test",
+      "Flow cytometry for CD55/CD59",
+      "Coombs test"
     ],
-    "answer": 2,
-    "exp": "Vitamin D is correct based on the key laboratory/physiology principle tested in the stem."
+    "answer": 3,
+    "exp": "Flow cytometry detecting absent CD55/CD59 on RBCs is the most specific test for PNH, confirming deficient GPI-anchored proteins. Ham’s and sucrose lysis tests are less specific and outdated, and the Coombs test is negative in PNH."
   },
   {
-    "q": "The anticoagulant used for full blood count is:",
+    "q": "A 5-year-old presents with pancytopenia. Bone marrow biopsy shows hypocellularity with fat spaces. Diagnosis?",
     "options": [
-      "Sodium citrate",
-      "EDTA",
-      "Heparin",
-      "Oxalate"
-    ],
-    "answer": 1,
-    "exp": "EDTA chelates calcium—preferred for hematology (CBC/smear)."
-  },
-  {
-    "q": "ESR is commonly performed using:",
-    "options": [
-      "Neubauer chamber",
-      "Westergren method",
-      "Coulter counter",
-      "Schilling's method"
+      "Acute lymphoblastic leukemia",
+      "Aplastic anemia",
+      "Myelodysplastic syndrome",
+      "Megaloblastic anemia"
     ],
     "answer": 1,
-    "exp": "ESR rises with increased fibrinogen/inflammation; it is a nonspecific marker."
+    "exp": "Pancytopenia with a hypocellular bone marrow and fat replacement is diagnostic of aplastic anemia. ALL shows hypercellular marrow with blasts, MDS has dysplastic features, and megaloblastic anemia shows megaloblasts, not hypocellularity."
   },
   {
-    "q": "The normal lifespan of RBCs is:",
+    "q": "Which of the following is the most common cause of microcytic hypochromic anemia worldwide?",
     "options": [
-      "60 days",
-      "90 days",
-      "120 days",
-      "150 days"
-    ],
-    "answer": 2,
-    "exp": "120 days is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Which factor is deficient in Hemophilia A?",
-    "options": [
-      "Factor VIII",
-      "Factor IX",
-      "Factor X",
-      "Factor V"
-    ],
-    "answer": 0,
-    "exp": "Factor VIII is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Reticulocyte count is useful in:",
-    "options": [
-      "Leukemia diagnosis",
-      "Anemia evaluation",
-      "Malaria detection",
-      "ESR"
-    ],
-    "answer": 1,
-    "exp": "Anemia evaluation is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Which stain is used in bone marrow smears?",
-    "options": [
-      "Wright stain",
-      "Leishman stain",
-      "May-Grünwald Giemsa",
-      "Ziehl-Neelsen"
-    ],
-    "answer": 2,
-    "exp": "May-Grünwald Giemsa is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Howell-Jolly bodies are remnants of:",
-    "options": [
-      "DNA",
-      "RNA",
-      "Iron",
-      "Protein"
-    ],
-    "answer": 0,
-    "exp": "DNA is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "The normal hemoglobin value for adult males is:",
-    "options": [
-      "10-12 g/dL",
-      "12-14 g/dL",
-      "13-17 g/dL",
-      "18-20 g/dL"
-    ],
-    "answer": 2,
-    "exp": "13-17 g/dL is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Which cell is the first to increase in bacterial infection?",
-    "options": [
-      "Eosinophils",
-      "Neutrophils",
-      "Lymphocytes",
-      "Monocytes"
-    ],
-    "answer": 1,
-    "exp": "Neutrophils is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Heinz bodies are seen in:",
-    "options": [
-      "Sickle cell anemia",
-      "G6PD deficiency",
+      "Sideroblastic anemia",
       "Iron deficiency anemia",
-      "Thalassemia"
+      "Thalassemia minor",
+      "Lead poisoning"
     ],
     "answer": 1,
-    "exp": "G6PD deficiency is correct based on the key laboratory/physiology principle tested in the stem."
+    "exp": "Iron deficiency anemia is the most common cause of microcytic hypochromic anemia globally due to dietary deficiency, blood loss, or malabsorption. Thalassemia is common in specific regions, while sideroblastic anemia and lead poisoning are rarer."
   },
   {
-    "q": "Prothrombin time (PT) assesses:",
+    "q": "A patient has hemophilia A. Which laboratory finding is most consistent?",
     "options": [
-      "Intrinsic pathway",
-      "Extrinsic pathway",
-      "Common pathway",
-      "Platelet function"
+      "Normal PT, prolonged aPTT",
+      "Prolonged PT, normal aPTT",
+      "Prolonged thrombin time",
+      "Low fibrinogen"
     ],
-    "answer": 1,
-    "exp": "Extrinsic pathway is correct based on the key laboratory/physiology principle tested in the stem."
+    "answer": 0,
+    "exp": "Hemophilia A (Factor VIII deficiency) affects the intrinsic pathway, leading to a prolonged aPTT with normal PT. Thrombin time and fibrinogen levels are normal, as the defect is upstream in the coagulation cascade."
   },
   {
-    "q": "Which test is used for sickle cell screening?",
+    "q": "Which RBC index is most reliable for differentiating iron deficiency anemia from thalassemia trait?",
+    "options": [
+      "MCH",
+      "MCV",
+      "RDW",
+      "Mentzer index"
+    ],
+    "answer": 3,
+    "exp": "The Mentzer index (MCV/RBC count) is most reliable, with <13 favoring thalassemia trait and >13 suggesting IDA. MCV and MCH are low in both, and RDW is typically high in IDA but less specific."
+  },
+  {
+    "q": "Auer rods are characteristically seen in:",
+    "options": [
+      "Acute lymphoblastic leukemia",
+      "Chronic lymphocytic leukemia",
+      "Acute myeloid leukemia",
+      "Myelofibrosis"
+    ],
+    "answer": 2,
+    "exp": "Auer rods, cytoplasmic inclusions of fused lysosomes, are specific to acute myeloid leukemia (AML), particularly subtypes with myeloid differentiation. They are not seen in ALL, CLL, or myelofibrosis."
+  },
+  {
+    "q": "Which coagulation factor is vitamin K-independent?",
+    "options": [
+      "Factor VII",
+      "Factor IX",
+      "Factor II",
+      "Factor VIII"
+    ],
+    "answer": 3,
+    "exp": "Factor VIII is not vitamin K-dependent, unlike Factors II, VII, IX, and X, which are synthesized in the liver and require vitamin K for gamma-carboxylation. Factor VIII is a cofactor in the intrinsic pathway."
+  },
+  {
+    "q": "Which test best differentiates megaloblastic from non-megaloblastic macrocytic anemia?",
+    "options": [
+      "Reticulocyte count",
+      "Serum folate",
+      "Peripheral smear",
+      "Bone marrow examination"
+    ],
+    "answer": 3,
+    "exp": "Bone marrow examination showing megaloblasts and hypersegmented neutrophils is the gold standard for confirming megaloblastic anemia (due to B12/folate deficiency). Peripheral smear may suggest it, but marrow confirms the diagnosis."
+  },
+  {
+    "q": "The gold standard test for diagnosis of sickle cell anemia is:",
+    "options": [
+      "Sickling test",
+      "Peripheral smear",
+      "Hemoglobin electrophoresis",
+      "Osmotic fragility test"
+    ],
+    "answer": 2,
+    "exp": "Hemoglobin electrophoresis definitively diagnoses sickle cell anemia by detecting HbS. Sickling tests are less specific, peripheral smears show sickle cells but are not confirmatory, and osmotic fragility is not relevant."
+  },
+  {
+    "q": "Which of the following is a common cause of thrombotic thrombocytopenic purpura (TTP)?",
+    "options": [
+      "ADAMTS13 deficiency",
+      "Factor V Leiden mutation",
+      "Protein C deficiency",
+      "Vitamin K deficiency"
+    ],
+    "answer": 0,
+    "exp": "TTP is caused by ADAMTS13 deficiency, leading to uncleaved von Willebrand factor multimers and microthrombi. Factor V Leiden and protein C deficiency cause thrombophilia but not TTP, and vitamin K deficiency affects clotting factors."
+  },
+  {
+    "q": "In disseminated intravascular coagulation (DIC), which of the following is typically decreased?",
+    "options": [
+      "Fibrinogen",
+      "D-dimer",
+      "FDP",
+      "Prothrombin time"
+    ],
+    "answer": 0,
+    "exp": "DIC involves consumption of clotting factors, leading to decreased fibrinogen due to excessive fibrin formation. D-dimer and FDP are elevated, and PT is prolonged due to factor depletion."
+  },
+  {
+    "q": "Which of the following RBC morphologies is most characteristic of G6PD deficiency?",
+    "options": [
+      "Bite cells and Heinz bodies",
+      "Target cells",
+      "Spherocytes",
+      "Rouleaux formation"
+    ],
+    "answer": 0,
+    "exp": "G6PD deficiency causes oxidative hemolysis, leading to Heinz bodies (denatured hemoglobin) and bite cells (RBCs with “bites” removed by splenic pitting). Target cells are seen in hemoglobinopathies, spherocytes in AIHA/HS, and rouleaux in myeloma."
+  },
+  {
+    "q": "Which bone marrow finding is most specific for multiple myeloma?",
+    "options": [
+      "Plasma cell hyperplasia",
+      "Reed-Sternberg cells",
+      "Megaloblastic changes",
+      "Increased reticulin"
+    ],
+    "answer": 0,
+    "exp": "Plasma cell hyperplasia (>10-20% clonal plasma cells) is the hallmark of multiple myeloma. Reed-Sternberg cells are seen in Hodgkin lymphoma, megaloblastic changes in B12/folate deficiency, and increased reticulin in myelofibrosis."
+  },
+  {
+    "q": "Which of the following is true of HbA1c measurement?",
+    "options": [
+      "Affected by hemolytic anemia",
+      "Unaffected by RBC lifespan",
+      "Reflects glucose levels for 6 months",
+      "Preferred in acute diabetes diagnosis"
+    ],
+    "answer": 0,
+    "exp": "HbA1c is affected by hemolytic anemia, as reduced RBC lifespan lowers HbA1c values. It reflects glucose levels over 2-3 months, not 6, and is not used for acute diabetes diagnosis."
+  },
+  {
+    "q": "Which laboratory test is most sensitive for monitoring warfarin therapy?",
+    "options": [
+      "aPTT",
+      "PT/INR",
+      "Thrombin time",
+      "Platelet function assay"
+    ],
+    "answer": 1,
+    "exp": "Warfarin inhibits vitamin K-dependent factors (II, VII, IX, X), prolonging PT/INR, which is the most sensitive test for monitoring its therapeutic effect. aPTT is less affected, thrombin time assesses fibrinogen, and platelet function is unrelated."
+  },
+  {
+    "q": "A 28-year-old with jaundice, elevated LDH, decreased haptoglobin, negative DAT, and schistocytes. Likely mechanism?",
+    "options": [
+      "Warm AIHA",
+      "Cold agglutinin disease",
+      "Microangiopathic hemolysis",
+      "Paroxysmal cold hemoglobinuria"
+    ],
+    "answer": 2,
+    "exp": "Schistocytes and negative DAT suggest microangiopathic hemolytic anemia (MAHA), caused by mechanical RBC destruction (e.g., TTP, HUS, DIC). AIHA (warm or cold) typically has a positive DAT, and PCH is associated with cold exposure and positive Donath-Landsteiner test."
+  },
+  {
+    "q": "Hereditary spherocytosis: most specific screening test in 2025 practice?",
+    "options": [
+      "Osmotic fragility",
+      "EMA binding by flow cytometry",
+      "Acidified glycerol lysis time",
+      "DAT"
+    ],
+    "answer": 1,
+    "exp": "EMA (eosin-5-maleimide) binding by flow cytometry is the most specific and sensitive test for hereditary spherocytosis, detecting reduced binding due to membrane protein defects. Osmotic fragility and glycerol lysis are less specific, and DAT is negative in HS."
+  },
+  {
+    "q": "G6PD deficiency bite cells appear after oxidative stress because:",
+    "options": [
+      "Band 3 deficiency",
+      "Heinz body pitting in spleen",
+      "Membrane sphingomyelinase activation",
+      "ATP depletion"
+    ],
+    "answer": 1,
+    "exp": "In G6PD deficiency, oxidative stress causes Heinz body formation (denatured hemoglobin), which are pitted by the spleen, forming bite cells. Band 3 defects are seen in HS, and sphingomyelinase activation or ATP depletion are not primary mechanisms."
+  },
+  {
+    "q": "Warm AIHA treatment of choice initially:",
+    "options": [
+      "Rituximab",
+      "Splenectomy",
+      "High-dose steroids",
+      "IVIG alone"
+    ],
+    "answer": 2,
+    "exp": "High-dose corticosteroids (e.g., prednisone) are the first-line treatment for warm AIHA to suppress the immune response. Rituximab is second-line, splenectomy is considered later, and IVIG is less effective in warm AIHA."
+  },
+  {
+    "q": "PCH is mediated by:",
+    "options": [
+      "IgM anti-I",
+      "IgG anti-P (Donath-Landsteiner)",
+      "IgG anti-i",
+      "Complement C3 nephritic factor"
+    ],
+    "answer": 1,
+    "exp": "Paroxysmal cold hemoglobinuria (PCH) is mediated by IgG anti-P (Donath-Landsteiner antibody), which binds RBCs in cold and activates complement upon warming, causing hemolysis. Anti-I and anti-i are associated with cold agglutinin disease, and C3 nephritic factor is unrelated."
+  },
+  {
+    "q": "PNH confirms hemolysis due to absence of:",
+    "options": [
+      "CD34",
+      "CD45",
+      "CD55/CD59",
+      "Glycophorin A"
+    ],
+    "answer": 2,
+    "exp": "PNH is characterized by the absence of CD55 and CD59 (GPI-anchored proteins) on RBCs, detected by flow cytometry, leading to complement-mediated hemolysis. CD34 and CD45 are unrelated, and glycophorin A is present."
+  },
+  {
+    "q": "Primary therapy preventing thrombosis in symptomatic PNH:",
+    "options": [
+      "Warfarin",
+      "Eculizumab/ravulizumab",
+      "Prednisone",
+      "Splenectomy"
+    ],
+    "answer": 1,
+    "exp": "Eculizumab or ravulizumab, anti-complement C5 monoclonal antibodies, are the primary therapies for PNH to prevent complement-mediated hemolysis and thrombosis. Warfarin is used for anticoagulation but not primary, prednisone is ineffective, and splenectomy is not standard."
+  },
+  {
+    "q": "Hemolysis with very high MCHC suggests:",
+    "options": [
+      "Iron deficiency",
+      "Hereditary spherocytosis",
+      "Thalassemia intermedia",
+      "Sideroblastic anemia"
+    ],
+    "answer": 1,
+    "exp": "Very high MCHC is characteristic of hereditary spherocytosis due to dehydrated, dense RBCs from membrane defects. Iron deficiency and thalassemia show low MCHC, and sideroblastic anemia is not associated with high MCHC."
+  },
+  {
+    "q": "Cold agglutinin disease DAT pattern:",
+    "options": [
+      "IgG+ C3-",
+      "IgG- C3+",
+      "IgG+ C3+",
+      "IgG- C3-"
+    ],
+    "answer": 1,
+    "exp": "Cold agglutinin disease typically shows a positive DAT with C3 only (IgG negative), as IgM antibodies fix complement in cold conditions. Warm AIHA shows IgG or IgG+C3, and a negative DAT excludes immune-mediated hemolysis."
+  },
+  {
+    "q": "Thrombotic microangiopathy with normal ADAMTS13 activity most consistent with:",
+    "options": [
+      "Immune TTP",
+      "Congenital TTP",
+      "Atypical HUS (complement mediated)",
+      "DIC"
+    ],
+    "answer": 2,
+    "exp": "Normal ADAMTS13 activity rules out TTP (immune or congenital) and points to atypical hemolytic uremic syndrome (aHUS), driven by complement dysregulation. DIC has broader coagulopathy with low fibrinogen and high D-dimer."
+  },
+  {
+    "q": "Spur cells (acanthocytes) in severe liver disease cause hemolysis primarily via:",
+    "options": [
+      "Complement fixation",
+      "Splenic sequestration of rigid membranes",
+      "Autoantibodies",
+      "Pyruvate kinase deficiency"
+    ],
+    "answer": 1,
+    "exp": "Spur cells (acanthocytes) in liver disease have rigid membranes due to lipid imbalances, leading to splenic sequestration and hemolysis. Complement fixation and autoantibodies are not primary, and pyruvate kinase deficiency causes a different hemolytic mechanism."
+  },
+  {
+    "q": "DAT-negative hemolysis after cephalosporin exposure: mechanism?",
+    "options": [
+      "Warm IgG autoantibody",
+      "Drug-dependent antibodies fixing complement",
+      "Nonimmune oxidative hemolysis",
+      "Microangiopathy"
+    ],
+    "answer": 1,
+    "exp": "Cephalosporin-induced hemolysis is often due to drug-dependent antibodies that fix complement, causing DAT-negative hemolysis (as the antibodies may not be detected). Warm AIHA is DAT-positive, oxidative hemolysis is unrelated to cephalosporins, and microangiopathy shows schistocytes."
+  },
+  {
+    "q": "Best single marker distinguishing intravascular from extravascular hemolysis:",
+    "options": [
+      "Total bilirubin",
+      "Haptoglobin (markedly low)",
+      "Reticulocytosis",
+      "LDH"
+    ],
+    "answer": 1,
+    "exp": "Markedly low haptoglobin is the best marker for intravascular hemolysis, as free hemoglobin released into plasma binds haptoglobin, depleting it. Bilirubin, LDH, and reticulocytosis are elevated in both types of hemolysis, making them less specific."
+  },
+  {
+    "q": "Hemolysis with hemoglobinuria + back pain after cold exposure: think",
+    "options": [
+      "PCH",
+      "HS",
+      "G6PD",
+      "PK deficiency"
+    ],
+    "answer": 0,
+    "exp": "Paroxysmal cold hemoglobinuria (PCH) presents with hemoglobinuria and back pain after cold exposure due to IgG anti-P (Donath-Landsteiner) antibody-mediated hemolysis. HS, G6PD, and PK deficiency do not typically involve cold-triggered hemoglobinuria."
+  },
+  {
+    "q": "PK deficiency anemia is classically:",
+    "options": [
+      "Normocytic hemolysis with high 2,3-DPG",
+      "Macrocytic with low 2,3-DPG",
+      "Microcytic with low retics",
+      "Aplastic"
+    ],
+    "answer": 0,
+    "exp": "Pyruvate kinase (PK) deficiency causes normocytic hemolytic anemia with high 2,3-DPG due to a metabolic block in glycolysis, increasing upstream metabolites. It is not macrocytic, microcytic, or aplastic, and reticulocytes are typically elevated."
+  },
+  {
+    "q": "Sideroblastic anemia hallmark on marrow:",
+    "options": [
+      "Ring sideroblasts (Prussian blue)",
+      "Auer rods",
+      "Sea-blue histiocytes",
+      "Fibrosis grade 3"
+    ],
+    "answer": 0,
+    "exp": "Ring sideroblasts, seen on Prussian blue staining, are the hallmark of sideroblastic anemia, reflecting abnormal mitochondrial iron accumulation. Auer rods are specific to AML, sea-blue histiocytes to storage disorders, and fibrosis to myelofibrosis."
+  },
+  {
+    "q": "HbSC disease vs HbSS typically shows:",
+    "options": [
+      "More painful crises",
+      "Higher Hb and viscosity with retinopathy risk",
+      "Lower risk of AVN",
+      "More severe hemolysis"
+    ],
+    "answer": 1,
+    "exp": "HbSC disease has milder hemolysis, higher hemoglobin levels, and increased blood viscosity compared to HbSS, raising the risk of retinopathy. Painful crises and avascular necrosis (AVN) are less frequent than in HbSS."
+  },
+  {
+    "q": "Hydroxyurea benefit in sickle cell due to:",
+    "options": [
+      "Increased HbA",
+      "Increased HbF",
+      "Lowered EPO",
+      "Increased HbS polymerization"
+    ],
+    "answer": 1,
+    "exp": "Hydroxyurea increases fetal hemoglobin (HbF), which inhibits HbS polymerization, reducing sickling and crises in sickle cell disease. It does not increase HbA, lower EPO, or promote HbS polymerization."
+  },
+  {
+    "q": "Methemoglobinemia lab clue on ABG co-oximetry:",
+    "options": [
+      "Very high O2 sat",
+      "Normal PaO2 with low pulse ox",
+      "Low PaO2 with high pulse ox",
+      "High carboxyhemoglobin"
+    ],
+    "answer": 1,
+    "exp": "Methemoglobinemia shows normal PaO2 (arterial oxygen) on ABG but low pulse oximetry readings due to methemoglobin’s inability to carry oxygen. Carboxyhemoglobin is unrelated, and O2 sat is not very high."
+  },
+  {
+    "q": "Macrocytosis with neurologic deficits but normal serum B12; next test?",
+    "options": [
+      "RBC folate",
+      "Methylmalonic acid",
+      "Homocysteine only",
+      "Serum ferritin"
+    ],
+    "answer": 1,
+    "exp": "Normal serum B12 with macrocytosis and neurologic deficits suggests possible functional B12 deficiency. Methylmalonic acid (elevated in B12 deficiency) is the next test to confirm. Folate deficiency causes macrocytosis but not neurologic issues, and homocysteine is less specific."
+  },
+  {
+    "q": "Thalassemia trait vs iron deficiency on indices:",
+    "options": [
+      "Increased RDW in thalassemia",
+      "Mentzer index <13 favors thalassemia",
+      "Low RBC count in thalassemia",
+      "High ferritin in IDA"
+    ],
+    "answer": 1,
+    "exp": "A Mentzer index (MCV/RBC) <13 favors thalassemia trait due to microcytosis with relatively preserved RBC count. RDW is typically normal in thalassemia but high in IDA, and ferritin is low in IDA."
+  },
+  {
+    "q": "Thalassemia major electrophoresis shows:",
+    "options": [
+      "Increased HbA",
+      "Increased HbA2 only",
+      "Increased HbF with absent/low HbA",
+      "Increased HbS"
+    ],
+    "answer": 2,
+    "exp": "Thalassemia major (beta-thalassemia) shows increased HbF and absent/low HbA due to defective beta-globin production. HbA2 may be elevated but is not the primary finding, and HbS is specific to sickle cell disease."
+  },
+  {
+    "q": "Alpha-thalassemia with HbH disease excess chain is:",
+    "options": [
+      "Alpha chains",
+      "Beta chains tetramers",
+      "Gamma tetramers (Bart’s)",
+      "Delta tetramers"
+    ],
+    "answer": 1,
+    "exp": "HbH disease (three alpha-gene deletions) results in excess beta chains forming beta-tetramers (HbH). Gamma tetramers (Hb Bart’s) occur in severe alpha-thalassemia (hydrops fetalis), and delta chains are unrelated."
+  },
+  {
+    "q": "Iron studies in thalassemia trait typically:",
+    "options": [
+      "Low ferritin",
+      "Normal/high ferritin, normal/high iron",
+      "Low transferrin saturation",
+      "High TIBC"
+    ],
+    "answer": 1,
+    "exp": "Thalassemia trait shows normal or high ferritin and iron due to increased RBC turnover, unlike iron deficiency anemia, which has low ferritin, low iron, low transferrin saturation, and high TIBC."
+  },
+  {
+    "q": "Unstable hemoglobin detection:",
+    "options": [
+      "Heat instability/isopropanol tests",
+      "Sickling test",
+      "DAT",
+      "EMA binding"
+    ],
+    "answer": 0,
+    "exp": "Unstable hemoglobinopathies are detected by heat instability or isopropanol precipitation tests, which identify denatured hemoglobin. Sickling tests are for HbS, DAT for immune hemolysis, and EMA for membrane defects like HS."
+  },
+  {
+    "q": "HbE trait pattern on HPLC:",
+    "options": [
+      "HbF predominant",
+      "Distinct HbE peak with microcytosis",
+      "Only HbA2 raised",
+      "Normal pattern"
+    ],
+    "answer": 1,
+    "exp": "HbE trait shows a distinct HbE peak on HPLC with microcytosis due to reduced beta-globin production. HbF is not predominant, HbA2 is mildly elevated, and the pattern is not normal."
+  },
+  {
+    "q": "Post-transfusion electrophoresis in HbSS shows HbA; to assess endogenous production use:",
+    "options": [
+      "Absolute retics",
+      "HbA2",
+      "Serial HbF %",
+      "Sickle solubility"
+    ],
+    "answer": 2,
+    "exp": "Serial HbF percentage monitors endogenous hemoglobin production in sickle cell disease, as transfused HbA dilutes HbS and HbF. HbA2 is not informative, retics reflect hemolysis, and sickle solubility is less quantitative."
+  },
+  {
+    "q": "Sickle solubility test false negatives when:",
+    "options": [
+      "HbS < 15% (recent transfusion)",
+      "High WBC",
+      "High bilirubin",
+      "High triglycerides"
+    ],
+    "answer": 0,
+    "exp": "Sickle solubility tests are falsely negative when HbS is <15%, often due to recent transfusions diluting HbS. High WBC, bilirubin, or triglycerides do not typically affect the test."
+  },
+  {
+    "q": "Neonatal screening detects sickle disease primarily by:",
     "options": [
       "Solubility test",
-      "PT",
-      "BT",
-      "ESR"
+      "Isoelectric focusing/HPLC (HbF predominant patterns)",
+      "DAT",
+      "Heinz body stain"
     ],
-    "answer": 0,
-    "exp": "Solubility test is correct based on the key laboratory/physiology principle tested in the stem."
+    "answer": 1,
+    "exp": "Neonatal screening uses isoelectric focusing or HPLC to detect abnormal hemoglobins (e.g., HbS, HbF patterns) in sickle cell disease. Solubility tests are unreliable in newborns, DAT is irrelevant, and Heinz bodies are for G6PD."
   },
   {
-    "q": "The normal platelet count is:",
+    "q": "Co-inheritance of alpha-thalassemia in HbSS typically:",
     "options": [
-      "50,000-100,000/uL",
-      "100,000-200,000/µL",
-      "150,000-400,000/µL",
-      "500,000-600,000/µL"
+      "Worsens hemolysis",
+      "Lowers MCV and may reduce hemolysis",
+      "Increases HbF",
+      "Raises risk of stroke"
+    ],
+    "answer": 1,
+    "exp": "Co-inherited alpha-thalassemia in HbSS reduces MCV and may decrease hemolysis by reducing HbS concentration, improving RBC survival. It does not increase HbF or stroke risk."
+  },
+  {
+    "q": "CML diagnostic hallmark:",
+    "options": [
+      "JAK2 V617F",
+      "BCR-ABL1 fusion (t9;22)",
+      "CALR mutation",
+      "MPL mutation"
+    ],
+    "answer": 1,
+    "exp": "The BCR-ABL1 fusion gene from t(9;22) (Philadelphia chromosome) is the diagnostic hallmark of CML. JAK2, CALR, and MPL mutations are associated with other myeloproliferative neoplasms."
+  },
+  {
+    "q": "Leukemoid reaction vs CML:",
+    "options": [
+      "Low LAP score in leukemoid",
+      "BCR-ABL1 in leukemoid",
+      "Toxic granulation/Döhle bodies favor leukemoid",
+      "Basophilia favors leukemoid"
     ],
     "answer": 2,
-    "exp": "150,000-400,000/pL is correct based on the key laboratory/physiology principle tested in the stem."
+    "exp": "Toxic granulation and Döhle bodies in neutrophils suggest a leukemoid reaction (reactive leukocytosis) rather than CML, which shows basophilia and BCR-ABL1. LAP score is low in CML, not leukemoid reactions."
   },
   {
-    "q": "Schistocytes are seen in:",
+    "q": "APL (M3) emergency due to:",
     "options": [
-      "Thalassemia",
-      "Hemolytic anemia",
-      "Leukemia",
+      "Tumor lysis",
+      "Hypercalcemia",
+      "DIC from promyelocytes",
+      "CNS infiltration"
+    ],
+    "answer": 2,
+    "exp": "Acute promyelocytic leukemia (APL) often presents with DIC due to release of procoagulants from promyelocytes, causing bleeding or thrombosis. Tumor lysis and hypercalcemia are less common, and CNS infiltration is rare."
+  },
+  {
+    "q": "APL targetable fusion:",
+    "options": [
+      "PML-RARA",
+      "RUNX1-RUNX1T1",
+      "CBFB-MYH11",
+      "BCL2-IGH"
+    ],
+    "answer": 0,
+    "exp": "The PML-RARA fusion in APL (t(15;17)) is targetable with ATRA and arsenic trioxide. Other translocations are associated with different leukemias or lymphomas."
+  },
+  {
+    "q": "t(8;21) AML immunophenotype typically shows:",
+    "options": [
+      "Monocytic markers only",
+      "CD34+, MPO+, aberrant CD19",
+      "TdT+",
+      "CD3+"
+    ],
+    "answer": 1,
+    "exp": "AML with t(8;21) typically expresses CD34, MPO, and aberrant CD19, reflecting myeloid lineage with some lymphoid marker expression. TdT is more common in ALL, and CD3 is T-cell specific."
+  },
+  {
+    "q": "Myelofibrosis leukoerythroblastic smear shows:",
+    "options": [
+      "Rouleaux only",
+      "Teardrops, nucleated RBCs, early myeloid forms",
+      "Blasts >20%",
+      "Spherocytes"
+    ],
+    "answer": 1,
+    "exp": "Myelofibrosis causes a leukoerythroblastic smear with teardrop RBCs, nucleated RBCs, and early myeloid forms due to marrow fibrosis and extramedullary hematopoiesis. Blasts >20% suggest AML, and spherocytes are unrelated."
+  },
+  {
+    "q": "Polycythemia vera first-line driver mutation:",
+    "options": [
+      "CALR",
+      "MPL",
+      "JAK2 V617F/exon 12",
+      "ASXL1"
+    ],
+    "answer": 2,
+    "exp": "JAK2 V617F or exon 12 mutations are the primary drivers in polycythemia vera, activating erythropoiesis. CALR and MPL are associated with essential thrombocythemia or myelofibrosis, and ASXL1 with MDS."
+  },
+  {
+    "q": "PV iron indices often:",
+    "options": [
+      "High ferritin",
+      "Low ferritin (iron-restricted erythropoiesis)",
+      "Normal transferrin saturation",
+      "High TIBC"
+    ],
+    "answer": 1,
+    "exp": "Polycythemia vera often shows low ferritin due to iron-restricted erythropoiesis from increased RBC production. Transferrin saturation is typically low, and TIBC is not high."
+  },
+  {
+    "q": "Essential thrombocythemia risk feature for thrombosis:",
+    "options": [
+      "Platelets > 1000 ×10^9/L alone",
+      "Age > 60 or JAK2 mutation or prior thrombosis",
+      "CALR mutation",
+      "Low WBC"
+    ],
+    "answer": 1,
+    "exp": "Risk factors for thrombosis in essential thrombocythemia include age >60, JAK2 mutation, or prior thrombosis. High platelet count alone is not sufficient, and CALR mutations are less thrombogenic."
+  },
+  {
+    "q": "CLL classic phenotype:",
+    "options": [
+      "CD5- CD19+ CD23-",
+      "CD5+ CD19+ CD23+ with dim surface Ig",
+      "CD3+ CD7+",
+      "CD34+ TdT+"
+    ],
+    "answer": 1,
+    "exp": "CLL is characterized by CD5+, CD19+, CD23+, and dim surface immunoglobulin, reflecting mature B-cell origin. CD3/CD7 are T-cell markers, and CD34/TdT are seen in immature leukemias like ALL."
+  },
+  {
+    "q": "Richter transformation refers to evolution of CLL to:",
+    "options": [
+      "AML",
+      "DLBCL",
+      "Hodgkin lymphoma",
+      "Hairy cell leukemia"
+    ],
+    "answer": 1,
+    "exp": "Richter transformation is the evolution of CLL to diffuse large B-cell lymphoma (DLBCL), a high-grade malignancy. It does not transform into AML, Hodgkin lymphoma, or hairy cell leukemia."
+  },
+  {
+    "q": "Hairy cell leukemia key marker:",
+    "options": [
+      "CD10",
+      "CD103, CD25, annexin A1",
+      "CD30",
+      "CD34"
+    ],
+    "answer": 1,
+    "exp": "Hairy cell leukemia is characterized by CD103, CD25, and annexin A1 expression, reflecting its unique B-cell phenotype. CD10 is seen in follicular lymphoma, CD30 in Hodgkin lymphoma, and CD34 in blasts."
+  },
+  {
+    "q": "ALL with poor prognosis adult marker:",
+    "options": [
+      "Hyperdiploidy",
+      "t(9;22) BCR-ABL1 positive",
+      "ETV6-RUNX1",
+      "t(12;21)"
+    ],
+    "answer": 1,
+    "exp": "t(9;22) (BCR-ABL1) in ALL is associated with poor prognosis in adults. Hyperdiploidy and ETV6-RUNX1 (t(12;21)) are favorable in pediatric ALL."
+  },
+  {
+    "q": "AML minimal criteria (WHO/ICC) without defining genetic lesions:",
+    "options": [
+      "≥10% blasts",
+      "≥20% blasts",
+      "≥30% blasts",
+      "≥50% blasts"
+    ],
+    "answer": 1,
+    "exp": "AML is diagnosed with ≥20% blasts in bone marrow or peripheral blood (WHO/ICC criteria) in the absence of specific genetic lesions. Lower or higher thresholds are not standard."
+  },
+  {
+    "q": "MDS characteristic blood finding:",
+    "options": [
+      "Basophilia",
+      "Macrocytosis with cytopenias",
+      "Eosinophilia",
       "Polycythemia"
     ],
     "answer": 1,
-    "exp": "Hemolytic anemia is correct based on the key laboratory/physiology principle tested in the stem."
+    "exp": "Myelodysplastic syndromes (MDS) typically present with macrocytosis and cytopenias (anemia, thrombocytopenia, or neutropenia) due to ineffective hematopoiesis. Basophilia, eosinophilia, and polycythemia are not typical."
   },
   {
-    "q": "Which anticoagulant is used for coagulation studies?",
+    "q": "t(15;17) APL therapy backbone:",
     "options": [
-      "EDTA",
-      "Sodium citrate",
-      "Heparin",
-      "Fluoride"
+      "Cytarabine alone",
+      "ATRA + arsenic trioxide",
+      "High-dose methotrexate",
+      "Hydroxyurea only"
     ],
     "answer": 1,
-    "exp": "Citrate binds calcium reversibly—blue top—for coagulation assays (PT/aPTT)."
+    "exp": "APL with t(15;17) is treated with all-trans retinoic acid (ATRA) and arsenic trioxide, targeting the PML-RARA fusion. Cytarabine, methotrexate, and hydroxyurea are not primary therapies."
   },
   {
-    "q": "The osmotic fragility test is used in:",
+    "q": "Tumor lysis lab hallmark:",
     "options": [
-      "Sickle cell anemia",
-      "Hereditary sperocytosis",
-      "Leukemia",
-      "Malaria"
+      "Low K, low P, high uric acid",
+      "High K, high P, high uric acid, high Cr",
+      "Low Ca",
+      "Low LDH"
     ],
     "answer": 1,
-    "exp": "Hereditary sperocytosis is correct based on the key laboratory/physiology principle tested in the stem."
+    "exp": "Tumor lysis syndrome is characterized by high potassium, high phosphate, high uric acid, and high creatinine due to rapid cell breakdown. Low calcium is common but not the hallmark, and LDH is elevated, not low."
   },
   {
-    "q": "Increased lymphocytes are seen in:",
+    "q": "Post-polycythemia myelofibrosis clue:",
     "options": [
-      "Bacterial infection",
-      "Viral infection",
-      "Parasitic infection",
-      "Anaemia"
+      "Low EPO in anemia",
+      "Rising EPO",
+      "Loss of JAK2",
+      "High LAP"
+    ],
+    "answer": 0,
+    "exp": "Post-polycythemia myelofibrosis shows low erythropoietin (EPO) despite anemia, reflecting marrow failure. Rising EPO is seen in other anemias, JAK2 persists, and LAP is not relevant."
+  },
+  {
+    "q": "Chronic neutrophilic leukemia driver often:",
+    "options": [
+      "CSF3R mutations",
+      "BCR-ABL1",
+      "JAK2",
+      "CALR"
+    ],
+    "answer": 0,
+    "exp": "Chronic neutrophilic leukemia is driven by CSF3R mutations in most cases. BCR-ABL1 is specific to CML, and JAK2/CALR are associated with other myeloproliferative neoplasms."
+  },
+  {
+    "q": "Blastic plasmacytoid dendritic cell neoplasm hallmark:",
+    "options": [
+      "CD20 strong",
+      "CD4+, CD56+, CD123 bright",
+      "CD3+, TCR+",
+      "CD34+ only"
     ],
     "answer": 1,
-    "exp": "Viral infection is correct based on the key laboratory/physiology principle tested in the stem."
+    "exp": "Blastic plasmacytoid dendritic cell neoplasm is characterized by CD4, CD56, and bright CD123 expression, reflecting its dendritic cell origin. CD20 is B-cell specific, CD3 is T-cell specific, and CD34 alone is not diagnostic."
   },
   {
-    "q": "The coagulation factor not synthesized in the liver is:",
+    "q": "Follicular lymphoma translocation:",
     "options": [
-      "Factor V",
-      "Factor VII",
-      "Factor VIII",
-      "Factor IX"
+      "t(9;22)",
+      "t(11;14)",
+      "t(14;18) BCL2",
+      "t(8;14)"
     ],
     "answer": 2,
-    "exp": "Factor VIII is correct based on the key laboratory/physiology principle tested in the stem."
+    "exp": "Follicular lymphoma is characterized by t(14;18), leading to BCL2 overexpression. t(9;22) is for CML, t(11;14) for mantle cell lymphoma, and t(8;14) for Burkitt lymphoma."
   },
   {
-    "q": "Auer rods are diagnostic of:",
+    "q": "Mantle cell lymphoma hallmark:",
     "options": [
-      "Chronic myeloid leukemia",
-      "Acute myeloid leukemia",
-      "Lymphoma",
-      "Iron deficiency anemia"
+      "BCL6 rearrangement",
+      "Cyclin D1 overexpression (t11;14)",
+      "ALK positivity",
+      "CD10 strong"
     ],
     "answer": 1,
-    "exp": "Acute myeloid leukemia is correct based on the key laboratory/physiology principle tested in the stem."
+    "exp": "Mantle cell lymphoma is driven by t(11;14), causing cyclin D1 overexpression. BCL6 is seen in DLBCL, ALK in anaplastic large cell lymphoma, and CD10 in follicular lymphoma."
   },
   {
-    "q": "Polycythemia refers to:",
+    "q": "DLBCL prognostic index:",
     "options": [
-      "Increased WBC",
-      "Increased RBC",
-      "Increased platelets",
-      "Increased plasma"
+      "Sokal",
+      "R-IPI/IPI",
+      "IPSS-R",
+      "ISS"
     ],
     "answer": 1,
-    "exp": "Increased RBC is correct based on the key laboratory/physiology principle tested in the stem."
+    "exp": "The International Prognostic Index (IPI) or Revised IPI (R-IPI) is used for diffuse large B-cell lymphoma (DLBCL). Sokal is for CML, IPSS-R for MDS, and ISS for multiple myeloma."
   },
   {
-    "q": "Gram-positive cocci in clusters are:",
+    "q": "Hodgkin lymphoma classical immunophenotype:",
     "options": [
-      "Streptococcus",
-      "Staphylococcus",
-      "Neisseria",
-      "Bacillus"
+      "CD20+, CD45+",
+      "CD30+, CD15+, PAX5 dim, CD45-",
+      "CD3+",
+      "CD10+, BCL6+"
     ],
     "answer": 1,
-    "exp": "Use classic bench tests (Gram, catalase/coagulase, oxidase, etc.) to differentiate common pathogens."
+    "exp": "Classical Hodgkin lymphoma shows CD30+, CD15+, dim PAX5, and CD45- on Reed-Sternberg cells. CD20/CD45 are B-cell markers, CD3 is T-cell specific, and CD10/BCL6 are for follicular lymphoma."
   },
   {
-    "q": "Ziehl-Neelsen stain is used for:",
+    "q": "Multiple myeloma CRAB features include all EXCEPT:",
     "options": [
-      "Fungi",
-      "Mycobacteria",
-      "Gram-negative bacteria",
-      "Spirochetes"
-    ],
-    "answer": 1,
-    "exp": "Mycobacteria is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "The medium used for culture of Vibrio cholerae is:",
-    "options": [
-      "MacConkey agar",
-      "Thiosulfate citrate bile salts sucrose agar(TCBS)",
-      "Blood agar",
-      "Chocolate agar"
-    ],
-    "answer": 1,
-    "exp": "Thiosulfate citrate bile salts sucrose agar(TCBS) is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Which bacteria produces a green pigment on a nutrient agar?",
-    "options": [
-      "Klebsiella",
-      "Pseudomonas aeruginosa",
-      "Proteus",
-      "Salmonella"
-    ],
-    "answer": 1,
-    "exp": "Pseudomonas aeruginosa is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Which organism causes rheumatic fever?",
-    "options": [
-      "Streptococcus pyogenes",
-      "Neisseria meningitidis",
-      "Corynebacterium diphtheria",
-      "Option 4"
-    ],
-    "answer": 1,
-    "exp": "Neisseria meningitidis is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Chocolate agar is enriched with:",
-    "options": [
-      "Blood",
-      "Hemoglobin and NAD",
-      "Bile salts",
-      "Serum"
-    ],
-    "answer": 1,
-    "exp": "Select media based on organism: e.g., MacConkey for lactose‑fermenting GNRs; MSA selects for staphylococci."
-  },
-  {
-    "q": "Which bacterial structure is responsible for motility?",
-    "options": [
-      "Capsule",
-      "Pilus",
-      "Flagella",
-      "Cell wall"
-    ],
-    "answer": 2,
-    "exp": "Flagella is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "The causative agent of whooping cough is:",
-    "options": [
-      "Bordetella pertussis",
-      "Corynebacterium diphtheria",
-      "Haemophilus influenzae",
-      "Mycoplasma pneumoniae"
-    ],
-    "answer": 0,
-    "exp": "Bordetella pertussis is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Lancefield classification applies to:",
-    "options": [
-      "Streptococci",
-      "Staphylococci",
-      "Bacilli",
-      "Clostridia"
-    ],
-    "answer": 0,
-    "exp": "Streptococci is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "The causative agent of syphilis is:",
-    "options": [
-      "Treponema pallidum",
-      "Leptospira interrogans",
-      "Borrelia burgdorferi",
-      "Neisseria gonorrhoeae"
-    ],
-    "answer": 0,
-    "exp": "Treponema pallidum is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Optochin sensitivity test is used to differentiate:",
-    "options": [
-      "Streptococcus pyogenes from S. agalactiae",
-      "Streptococcus pneumonia from viridans streptococci",
-      "Staphylococcus aureus from coagulase-negative staphylococci",
-      "Salmonella from Shigella"
-    ],
-    "answer": 1,
-    "exp": "Use classic bench tests (Gram, catalase/coagulase, oxidase, etc.) to differentiate common pathogens."
-  },
-  {
-    "q": "The causative agent of botulism is:",
-    "options": [
-      "Clostridium tetani",
-      "Clostridium botulinum",
-      "Clostridium difficile",
-      "Clostridium perfringens"
-    ],
-    "answer": 1,
-    "exp": "Clostridium botulinum is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Which test detects bacterial motility?",
-    "options": [
-      "Hanging drop preparation",
-      "Gram stain",
-      "Catalase test",
-      "Oxidase test"
-    ],
-    "answer": 0,
-    "exp": "Hanging drop preparation is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Coagulase-positive staphylococcus is:",
-    "options": [
-      "S. epidermidis",
-      "S. saprophyticus",
-      "S. aureus",
-      "S. hominis"
-    ],
-    "answer": 2,
-    "exp": "Use classic bench tests (Gram, catalase/coagulase, oxidase, etc.) to differentiate common pathogens."
-  },
-  {
-    "q": "Widal test is used for diagnosis of:",
-    "options": [
-      "Typhoid fever",
-      "Tuberculosis",
-      "Cholera",
-      "Gonorrhea"
-    ],
-    "answer": 0,
-    "exp": "Typhoid fever is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Endotoxin is a component of:",
-    "options": [
-      "Gram-positive cell wall",
-      "Gram-negative outer membrane",
-      "Bacterial capsule",
-      "Spore coat"
-    ],
-    "answer": 1,
-    "exp": "Gram-negative outer membrane is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "The causative agent of anthrax is:",
-    "options": [
-      "Bacillus cereus",
-      "Bacillus anthracis",
-      "Clostridium tetani",
-      "Yersinia pestis"
-    ],
-    "answer": 1,
-    "exp": "Bacillus anthracis is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Elek's test is used to detect",
-    "options": [
-      "Tetanus toxin",
-      "Botulinum toxin",
-      "Diphtheria toxin",
-      "Pertussis toxin"
-    ],
-    "answer": 2,
-    "exp": "Diphtheria toxin is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Which bacterium is associated with peptic ulcer disease?",
-    "options": [
-      "Escherichia coli",
-      "Helicobacter pylori",
-      "Klebsiella pneumonia",
-      "Shigella dysenteriae"
-    ],
-    "answer": 1,
-    "exp": "Helicobacter pylori is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Mcintosh and Fildes anaerobic jar is used for:",
-    "options": [
-      "Aerobes",
-      "Anaerobes",
-      "Fungi",
-      "Viruses"
-    ],
-    "answer": 1,
-    "exp": "Anaerobes is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "The infective stage of Plasmodium falciparum to humans is:",
-    "options": [
-      "Gametocyte",
-      "Sporozoite",
-      "Merozoite",
-      "Trophozoite"
-    ],
-    "answer": 1,
-    "exp": "Sporozoite is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Scotch tape method is used for:",
-    "options": [
-      "Ascaris lumbricoides",
-      "Enterobius vermicularis",
-      "Trichuris trichiura",
-      "Hookworm"
-    ],
-    "answer": 1,
-    "exp": "Enterobius vermicularis is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "The vector of malaria is:",
-    "options": [
-      "Culex mosquito",
-      "Aedes mosquito",
-      "Anopheles mosquito",
-      "Sandfly"
-    ],
-    "answer": 2,
-    "exp": "Anopheles mosquito is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Kala-azar is caused by:",
-    "options": [
-      "Leishmania donovani",
-      "Trypanosoma cruzi",
-      "Plasmodium vivax",
-      "Giardia lamblia"
-    ],
-    "answer": 0,
-    "exp": "Leishmania donovani is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "The infective stage of Entamoeba histolytica is",
-    "options": [
-      "Trophozoite",
-      "Pre-cyst",
-      "Cyst",
-      "Gametocyte"
-    ],
-    "answer": 2,
-    "exp": "Cyst is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Microfilaria is the diagnostic stage of:",
-    "options": [
-      "Wuchereria bancrofti",
-      "Schistosoma haematobium",
-      "Plasmodium falciparum",
-      "Entamoeba histolytica"
-    ],
-    "answer": 0,
-    "exp": "Wuchereria bancrofti is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Sleeping sickness is caused by:",
-    "options": [
-      "Trypanosoma brucei",
-      "Giardia lamblia",
-      "Leishmania tropica",
-      "Balantidium coli"
-    ],
-    "answer": 0,
-    "exp": "Trypanosoma brucei is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Elephantiasis is caused by:",
-    "options": [
-      "Onchocerca volvulus",
-      "Trichinella spiralis",
-      "Wuchereria bancrofti",
-      "Taenia saginata"
-    ],
-    "answer": 2,
-    "exp": "Wuchereria bancrofti is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Hydatid disease is caused by:",
-    "options": [
-      "Taenia saginata",
-      "Taenia solium",
-      "Echinococcus granulosus",
-      "Diphyllobothrium latum"
-    ],
-    "answer": 2,
-    "exp": "Echinococcus granulosus is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Snail is the intermediate host of:",
-    "options": [
-      "Schistosoma",
-      "Plasmodium",
-      "Trypanosoma",
-      "Trichuris"
-    ],
-    "answer": 0,
-    "exp": "Schistosoma is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Which immunoglobulin crosses the placenta?",
-    "options": [
-      "IgA",
-      "IgM",
-      "IgE",
-      "IgG"
+      "Hypercalcemia",
+      "Renal failure",
+      "Anemia",
+      "Basophilia"
     ],
     "answer": 3,
-    "exp": "IgG is correct based on the key laboratory/physiology principle tested in the stem."
+    "exp": "Multiple myeloma CRAB features are hypercalcemia, renal failure, anemia, and bone lesions. Basophilia is not a feature of myeloma."
   },
   {
-    "q": "The Coombs test detects:",
+    "q": "Smoldering myeloma vs MGUS key distinction:",
     "options": [
-      "Free antibodies",
-      "Cell-bound antibodies",
-      "Antigen-antibody complexes",
-      "Complement activation"
-    ],
-    "answer": 1,
-    "exp": "Cell-bound antibodies is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Which cells are responsible for antibody production?",
-    "options": [
-      "T-cells",
-      "B-cells",
-      "Plasma cells",
-      "NK cells"
+      "Any M-protein",
+      "Bone lesions present",
+      "Clonal marrow plasma cells ≥10% but <60% without CRAB",
+      "Urine light chains absent"
     ],
     "answer": 2,
-    "exp": "Plasma cells is correct based on the key laboratory/physiology principle tested in the stem."
+    "exp": "Smoldering myeloma is defined by ≥10% but <60% clonal plasma cells in marrow and/or M-protein ≥3 g/dL without CRAB features. MGUS has lower plasma cells (<10%) and no CRAB. Bone lesions indicate active myeloma."
   },
   {
-    "q": "Type I hypersensitivity is mediated by:",
+    "q": "High-risk cytogenetic in myeloma:",
     "options": [
-      "IgM",
+      "t(11;14)",
+      "del(13q) only",
+      "del(17p) / TP53 abnormalities",
+      "Hyperdiploidy"
+    ],
+    "answer": 2,
+    "exp": "del(17p) or TP53 abnormalities are high-risk cytogenetic features in multiple myeloma, associated with poor prognosis. t(11;14) and hyperdiploidy are standard risk, and del(13q) is intermediate."
+  },
+  {
+    "q": "Waldenström macroglobulinemia Ig:",
+    "options": [
       "IgA",
-      "IgE",
-      "IgG"
+      "IgG",
+      "IgM",
+      "Light chains only"
     ],
     "answer": 2,
-    "exp": "Sensitivity rules out (SnNout); specificity rules in (SpPin); PPV/NPV vary with disease prevalence."
+    "exp": "Waldenström macroglobulinemia is characterized by IgM monoclonal gammopathy. IgA and IgG are seen in myeloma, and light chains alone are in light-chain disease."
   },
   {
-    "q": "The major histocompatibility complex (MC) in humans is:",
+    "q": "Primary amyloidosis typing gold standard:",
     "options": [
-      "TCR",
-      "HLA",
-      "CD4",
-      "CD8"
+      "Congo red only",
+      "Mass spectrometry-based proteomics on deposits",
+      "Immunofluorescence for kappa/lambda",
+      "Serum free light chains alone"
     ],
     "answer": 1,
-    "exp": "HLA is correct based on the key laboratory/physiology principle tested in the stem."
+    "exp": "Mass spectrometry-based proteomics on amyloid deposits is the gold standard for typing primary amyloidosis (e.g., AL amyloid). Congo red confirms amyloid, but typing requires proteomics. Immunofluorescence and serum light chains are less specific."
   },
   {
-    "q": "Histoplasma capsulatum is endemic in:",
+    "q": "Myeloma cast nephropathy best acute management includes:",
     "options": [
-      "USA (Ohio River Valley)",
-      "Africa",
-      "Asia",
-      "Europe"
+      "High-dose steroids + prompt anti-myeloma therapy",
+      "Iron chelation",
+      "Desmopressin",
+      "Warfarin"
     ],
     "answer": 0,
-    "exp": "USA (Ohio River Valley) is correct based on the key laboratory/physiology principle tested in the stem."
+    "exp": "Myeloma cast nephropathy is managed with high-dose steroids and anti-myeloma therapy (e.g., bortezomib) to reduce light chain production and renal damage. Iron chelation, desmopressin, and warfarin are not relevant."
   },
   {
-    "q": "Cryptococcus neoformans is best diagnosed using:",
+    "q": "Hairy cell leukemia marrow feature:",
     "options": [
-      "India ink stain",
-      "Gram stain",
-      "H&E",
-      "PAS"
+      "Dry tap with fibrosis",
+      "Numerous blasts",
+      "Ring sideroblasts",
+      "Gaucher cells"
     ],
     "answer": 0,
-    "exp": "India ink stain is correct based on the key laboratory/physiology principle tested in the stem."
+    "exp": "Hairy cell leukemia often causes a dry tap on marrow aspiration due to fibrosis from infiltration. Blasts are seen in acute leukemias, ring sideroblasts in sideroblastic anemia, and Gaucher cells in Gaucher disease."
   },
   {
-    "q": "Ringworm Is caused by:",
+    "q": "MYD88 L265P mutation strongly associated with:",
     "options": [
-      "Candida",
-      "Dermatophytes",
-      "Aspergillus",
-      "Cryptococcus"
+      "Follicular lymphoma",
+      "Waldenström macroglobulinemia",
+      "CLL",
+      "APL"
     ],
     "answer": 1,
-    "exp": "Ringworm (tinea) is caused by dermatophyte fungi—mainly Trichophyton, Microsporum, and Epidermophyton. Candida causes candidiasis, not ringworm."
+    "exp": "MYD88 L265P mutation is strongly associated with Waldenström macroglobulinemia, seen in >90% of cases. It is less common in CLL and not typical in follicular lymphoma or APL."
   },
   {
-    "q": "Fungal cell walls contain:",
+    "q": "Burkitt lymphoma hallmark proliferation index:",
     "options": [
-      "Peptidoglycan",
-      "Chitin",
-      "Cellulose",
-      "Collagen"
+      "Ki-67 ~20%",
+      "Ki-67 >95%",
+      "Ki-67 40-60%",
+      "Low Ki-67 with BCL2+"
     ],
     "answer": 1,
-    "exp": "Fungal cell walls contain chitin (with β‑glucans). Bacteria have peptidoglycan; animals lack cell walls."
+    "exp": "Burkitt lymphoma is characterized by a very high proliferation index (Ki-67 >95%) due to its aggressive nature. Lower Ki-67 or BCL2 positivity is seen in other lymphomas like follicular or DLBCL."
   },
   {
-    "q": "Which of the following is a dimorphic fungus?",
+    "q": "Primary CNS lymphoma typical phenotype:",
     "options": [
-      "Aspergillus",
-      "Histoplasma",
-      "Candida",
-      "Mucor"
+      "T-cell",
+      "NK-cell",
+      "DLBCL, non-germinal center type",
+      "Follicular"
+    ],
+    "answer": 2,
+    "exp": "Primary CNS lymphoma is typically diffuse large B-cell lymphoma (DLBCL), non-germinal center type. T-cell and NK-cell lymphomas are rare in the CNS, and follicular lymphoma is not typical."
+  },
+  {
+    "q": "Light-chain AL amyloidosis renal finding:",
+    "options": [
+      "Immune complex GN",
+      "Non-branching 8-12 nm fibrils; Congo red-positive",
+      "Wire-loop lesions",
+      "Subepithelial humps"
+    ],
+    "answer": 1,
+    "exp": "AL amyloidosis shows non-branching 8-12 nm fibrils in tissues, staining Congo red-positive with apple-green birefringence. Immune complex GN, wire-loop lesions, and subepithelial humps are seen in other renal diseases like lupus or post-infectious GN."
+  },
+  {
+    "q": "Isolated prolonged aPTT, corrected on mixing, normal PT:",
+    "options": [
+      "Lupus anticoagulant",
+      "Heparin contamination",
+      "Factor VIII/IX/XI deficiency",
+      "DIC"
+    ],
+    "answer": 2,
+    "exp": "Prolonged aPTT that corrects on mixing suggests a factor deficiency (VIII, IX, or XI) in the intrinsic pathway. Lupus anticoagulant does not correct on mixing, heparin prolongs aPTT but is not corrected, and DIC affects both PT and aPTT."
+  },
+  {
+    "q": "Lupus anticoagulant typically causes:",
+    "options": [
+      "Bleeding",
+      "Thrombosis risk with prolonged aPTT",
+      "Shortened aPTT",
+      "Low D-dimer"
+    ],
+    "answer": 1,
+    "exp": "Lupus anticoagulant is associated with thrombosis risk despite prolonging aPTT in vitro due to antiphospholipid antibodies. It does not cause bleeding, shorten aPTT, or lower D-dimer."
+  },
+  {
+    "q": "VWD type 2B laboratory signature:",
+    "options": [
+      "High-MW multimers present",
+      "Enhanced ristocetin-induced platelet aggregation at low ristocetin",
+      "Absent vWF antigen",
+      "Normal multimers"
+    ],
+    "answer": 1,
+    "exp": "Type 2B von Willebrand disease (VWD) shows enhanced ristocetin-induced platelet aggregation at low ristocetin concentrations due to gain-of-function vWF mutations. High-MW multimers are decreased, not present, and vWF antigen is not absent."
+  },
+  {
+    "q": "Desmopressin is contraindicated in which vWD?",
+    "options": [
+      "Type 1",
+      "Type 2A",
+      "Type 2B",
+      "Type 3"
+    ],
+    "answer": 2,
+    "exp": "Desmopressin is contraindicated in type 2B VWD because it can exacerbate thrombocytopenia by promoting binding of abnormal vWF to platelets. It is used in type 1 and some type 2A cases but is ineffective in type 3."
+  },
+  {
+    "q": "Hemophilia A patient with bleeding not responding to FVIII: next step?",
+    "options": [
+      "Give more FVIII",
+      "Check inhibitor (Bethesda) titer",
+      "Give platelets",
+      "Tranexamic acid only"
+    ],
+    "answer": 1,
+    "exp": "Bleeding unresponsive to FVIII in hemophilia A suggests an inhibitor (anti-FVIII antibody). The Bethesda assay quantifies inhibitor titer to guide management. More FVIII is ineffective, and platelets or tranexamic acid do not address inhibitors."
+  },
+  {
+    "q": "Warfarin monitoring test:",
+    "options": [
+      "aPTT",
+      "Anti-Xa level",
+      "PT/INR",
+      "Thrombin time"
+    ],
+    "answer": 2,
+    "exp": "Warfarin is monitored using PT/INR, which reflects inhibition of vitamin K-dependent factors (II, VII, IX, X). aPTT is less sensitive, anti-Xa is for heparin, and thrombin time assesses fibrinogen."
+  },
+  {
+    "q": "Unfractionated heparin therapeutic monitoring:",
+    "options": [
+      "INR",
+      "aPTT or anti-Xa (heparin level)",
+      "PT",
+      "Fibrinogen"
+    ],
+    "answer": 1,
+    "exp": "Unfractionated heparin is monitored using aPTT or anti-Xa levels to ensure therapeutic anticoagulation. INR is for warfarin, PT is less affected, and fibrinogen is not specific."
+  },
+  {
+    "q": "DOAC effect on routine coag tests is:",
+    "options": [
+      "Predictable and linear",
+      "Variable; drug-specific anti-Xa or dTT assays preferred",
+      "No effect",
+      "Same as warfarin"
+    ],
+    "answer": 1,
+    "exp": "Direct oral anticoagulants (DOACs) have variable effects on PT/aPTT, so drug-specific assays (anti-Xa for apixaban/rivaroxaban, dilute thrombin time for dabigatran) are preferred. Effects are not linear, not absent, and differ from warfarin."
+  },
+  {
+    "q": "DIC lab panel classically:",
+    "options": [
+      "High platelets, high fibrinogen",
+      "Low platelets, high D-dimer, prolonged PT/aPTT, low fibrinogen",
+      "Isolated high aPTT",
+      "Normal D-dimer"
+    ],
+    "answer": 1,
+    "exp": "DIC shows low platelets, low fibrinogen, high D-dimer, and prolonged PT/aPTT due to consumption coagulopathy. Isolated high aPTT or normal D-dimer are not typical."
+  },
+  {
+    "q": "HIT (type II) hallmark:",
+    "options": [
+      "Thrombocytosis after heparin",
+      "Thrombocytopenia with thrombosis; PF4/heparin antibodies",
+      "Bleeding with prolonged PT",
+      "Positive DAT"
+    ],
+    "answer": 1,
+    "exp": "Heparin-induced thrombocytopenia (HIT) type II is characterized by thrombocytopenia, thrombosis, and PF4/heparin antibodies due to immune-mediated platelet activation. Thrombocytosis, bleeding, or positive DAT are not features."
+  },
+  {
+    "q": "Antiphospholipid syndrome confirmatory testing includes:",
+    "options": [
+      "VWF multimers",
+      "Lupus anticoagulant, anticardiolipin, anti-B2GP1 on two occasions 12 weeks apart",
+      "Protein C level only",
+      "Factor V Leiden only"
+    ],
+    "answer": 1,
+    "exp": "Antiphospholipid syndrome is confirmed by persistent lupus anticoagulant, anticardiolipin, or anti-beta2-glycoprotein I antibodies on two occasions ≥12 weeks apart. VWF multimers, protein C, and Factor V Leiden are unrelated."
+  },
+  {
+    "q": "Inherited thrombophilia with warfarin-induced skin necrosis risk:",
+    "options": [
+      "Protein C deficiency",
+      "Factor V Leiden",
+      "Antithrombin deficiency",
+      "Prothrombin G20210A"
     ],
     "answer": 0,
-    "exp": "Aspergillus is correct based on the key laboratory/physiology principle tested in the stem."
+    "exp": "Protein C deficiency increases the risk of warfarin-induced skin necrosis due to transient hypercoagulability when warfarin depletes protein C before other clotting factors. Other thrombophilias are less associated with this complication."
   },
   {
-    "q": "Aspergillus commonly affects the:",
+    "q": "Platelet function analyzer (PFA-100/200) prolonged closure time with both cartridges suggests:",
+    "options": [
+      "VWD or platelet dysfunction",
+      "Factor VII deficiency",
+      "Hemophilia B",
+      "Polycythemia"
+    ],
+    "answer": 0,
+    "exp": "Prolonged closure time on PFA-100/200 with both cartridges indicates von Willebrand disease or platelet dysfunction, affecting primary hemostasis. Factor deficiencies (VII, IX) and polycythemia do not typically affect PFA."
+  },
+  {
+    "q": "Ristocetin cofactor assay measures:",
+    "options": [
+      "VWF binding to GPIb",
+      "VWF binding to GPIIb/IIIa",
+      "Fibrinogen level",
+      "ADAMTS13 activity"
+    ],
+    "answer": 0,
+    "exp": "The ristocetin cofactor assay measures von Willebrand factor’s ability to bind platelet GPIb, assessing VWF function in hemostasis. It does not measure GPIIb/IIIa binding, fibrinogen, or ADAMTS13 activity."
+  },
+  {
+    "q": "Fibrinolysis marker most specific for cross-linked fibrin breakdown:",
+    "options": [
+      "FDP",
+      "D-dimer",
+      "Thrombin time",
+      "Plasminogen level"
+    ],
+    "answer": 1,
+    "exp": "D-dimer is the most specific marker for cross-linked fibrin breakdown, indicating fibrinolysis. FDPs are less specific, thrombin time assesses fibrinogen, and plasminogen levels are not direct markers."
+  },
+  {
+    "q": "Acquired hemophilia A (auto-anti-FVIII) mixing study shows:",
+    "options": [
+      "Full correction immediately and after incubation",
+      "No correction after 2-hour incubation",
+      "Correction only in PT",
+      "Correction only with heparinase"
+    ],
+    "answer": 1,
+    "exp": "Acquired hemophilia A (autoantibodies to FVIII) shows prolonged aPTT with no correction after 2-hour incubation in a mixing study due to inhibitor activity. Correction occurs in factor deficiencies, not inhibitors."
+  },
+  {
+    "q": "Post-thrombolysis (tPA) lab abnormality most expected:",
+    "options": [
+      "Low fibrinogen",
+      "High fibrinogen",
+      "Short PT",
+      "High platelets"
+    ],
+    "answer": 0,
+    "exp": "Thrombolytic therapy (tPA) activates fibrinolysis, depleting fibrinogen and causing coagulopathy. PT is prolonged, not shortened, and platelets are unaffected."
+  },
+  {
+    "q": "Massive transfusion coagulopathy prevention includes:",
+    "options": [
+      "PRBCs only",
+      "Balanced ratios with plasma and platelets; monitor fibrinogen",
+      "Vitamin K only",
+      "Desmopressin always"
+    ],
+    "answer": 1,
+    "exp": "Massive transfusion coagulopathy is prevented by balanced transfusion of PRBCs, plasma, and platelets, with fibrinogen monitoring to replace clotting factors. PRBCs alone worsen coagulopathy, and vitamin K or desmopressin are not sufficient."
+  },
+  {
+    "q": "Bernard-Soulier syndrome defect:",
+    "options": [
+      "GPIb/IX/V",
+      "GPIIb/IIIa",
+      "GPVI",
+      "P2Y12"
+    ],
+    "answer": 0,
+    "exp": "Bernard-Soulier syndrome is caused by a defect in GPIb/IX/V, impairing platelet adhesion to von Willebrand factor. GPIIb/IIIa defects cause Glanzmann thrombasthenia, and GPVI/P2Y12 are unrelated."
+  },
+  {
+    "q": "Glanzmann thrombasthenia defect:",
+    "options": [
+      "GPIb",
+      "GPIIb/IIIa (integrin αIIbβ3)",
+      "GPIa",
+      "GPVI"
+    ],
+    "answer": 1,
+    "exp": "Glanzmann thrombasthenia is caused by a defect in GPIIb/IIIa (integrin αIIbβ3), impairing platelet aggregation. GPIb defects cause Bernard-Soulier, and GPIa/GPVI are involved in other platelet functions."
+  },
+  {
+    "q": "Universal plasma donor group:",
+    "options": [
+      "AB",
+      "O",
+      "A",
+      "B"
+    ],
+    "answer": 0,
+    "exp": "AB plasma is the universal donor because it lacks anti-A, anti-B, and anti-AB antibodies, making it compatible with all recipients. Group O is the universal RBC donor."
+  },
+  {
+    "q": "Febrile non-hemolytic transfusion reaction prevention:",
+    "options": [
+      "Pathogen-reduced plasma",
+      "Leukoreduction",
+      "Irradiation",
+      "Washed RBCs only"
+    ],
+    "answer": 1,
+    "exp": "Febrile non-hemolytic transfusion reactions are caused by cytokines from donor leukocytes, prevented by leukoreduction. Irradiation prevents TA-GVHD, and washed RBCs are for specific indications like IgA deficiency."
+  },
+  {
+    "q": "TRALI pathogenesis involves:",
+    "options": [
+      "Volume overload",
+      "Donor anti-HLA/HNA antibodies",
+      "ABO mismatch",
+      "Bacterial contamination"
+    ],
+    "answer": 1,
+    "exp": "Transfusion-related acute lung injury (TRALI) is caused by donor anti-HLA or anti-HNA antibodies reacting with recipient neutrophils, causing pulmonary edema. Volume overload (TACO), ABO mismatch, and bacterial contamination have different mechanisms."
+  },
+  {
+    "q": "TACO distinguished from TRALI by:",
+    "options": [
+      "Fever",
+      "Hypertension and elevated BNP with fluid overload",
+      "Hypotension",
+      "Neutropenia"
+    ],
+    "answer": 1,
+    "exp": "Transfusion-associated circulatory overload (TACO) is characterized by hypertension, elevated BNP, and signs of fluid overload, unlike TRALI, which typically shows hypotension and no BNP elevation. Fever and neutropenia are not specific."
+  },
+  {
+    "q": "Irradiation of cellular components prevents:",
+    "options": [
+      "Hemolysis",
+      "TA-GVHD (lymphocyte proliferation)",
+      "Bacterial growth",
+      "CMV transmission"
+    ],
+    "answer": 1,
+    "exp": "Irradiation of blood products prevents transfusion-associated graft-versus-host disease (TA-GVHD) by inactivating donor lymphocytes. Leukoreduction reduces CMV, and other methods address hemolysis or bacterial growth."
+  },
+  {
+    "q": "Emergency release blood (unknown group) is:",
+    "options": [
+      "AB positive RBCs",
+      "O negative RBCs",
+      "B positive RBCs",
+      "A negative RBCs"
+    ],
+    "answer": 1,
+    "exp": "O negative RBCs are used in emergencies for unknown blood groups, as they lack A, B, and Rh antigens, minimizing incompatibility risks. AB positive is not universal for RBCs."
+  },
+  {
+    "q": "Positive antibody screen with history of multiple transfusions; next step for crossmatch?",
+    "options": [
+      "Immediate spin",
+      "Electronic issue",
+      "Antibody identification and antigen-negative units",
+      "Issue group O"
+    ],
+    "answer": 2,
+    "exp": "A positive antibody screen requires antibody identification and provision of antigen-negative units for safe crossmatching. Immediate spin or electronic issue risks incompatibility, and group O is not always necessary."
+  },
+  {
+    "q": "Delayed hemolytic transfusion reaction antibody most often:",
+    "options": [
+      "Anti-D only",
+      "Anti-K, anti-Jka, anti-E (anamnestic)",
+      "Anti-Lea",
+      "Anti-P1"
+    ],
+    "answer": 1,
+    "exp": "Delayed hemolytic transfusion reactions are commonly caused by anamnestic responses to Kidd (Jka), Kell (K), or Rh (E) antibodies from prior transfusions. Anti-D is less common, and anti-Lea/P1 are usually benign."
+  },
+  {
+    "q": "Neonatal alloimmune thrombocytopenia target antigen commonly:",
+    "options": [
+      "HPA-1a",
+      "HLA-A2",
+      "H antigen",
+      "I antigen"
+    ],
+    "answer": 0,
+    "exp": "Neonatal alloimmune thrombocytopenia is most commonly caused by maternal antibodies against HPA-1a on fetal platelets. HLA-A2, H, and I antigens are not typically involved."
+  },
+  {
+    "q": "Washed RBCs primarily indicated for:",
+    "options": [
+      "IgA deficiency with anti-IgA",
+      "Sickle trait",
+      "Leukopenia",
+      "Coagulopathy"
+    ],
+    "answer": 0,
+    "exp": "Washed RBCs are used in IgA deficiency with anti-IgA antibodies to prevent anaphylactic transfusion reactions. They are not indicated for sickle trait, leukopenia, or coagulopathy."
+  },
+  {
+    "q": "Aplastic anemia severity grading uses:",
+    "options": [
+      "Marrow cellularity only",
+      "ANC, platelets, reticulocytes (Camitta criteria)",
+      "LDH and bilirubin",
+      "EPO level"
+    ],
+    "answer": 1,
+    "exp": "Aplastic anemia severity is graded using the Camitta criteria (absolute neutrophil count, platelets, reticulocytes). Marrow cellularity is diagnostic but not for severity, and LDH/bilirubin/EPO are not used."
+  },
+  {
+    "q": "Fanconi anemia lab hallmark:",
+    "options": [
+      "Increased HbF only",
+      "Chromosomal breakage with diepoxybutane or MMC",
+      "JAK2 mutation",
+      "High LAP"
+    ],
+    "answer": 1,
+    "exp": "Fanconi anemia is diagnosed by chromosomal breakage tests using diepoxybutane or mitomycin C, reflecting DNA repair defects. HbF may be elevated, but it’s not specific, and JAK2/LAP are unrelated."
+  },
+  {
+    "q": "Neonatal polycythemia (venous Hct ≥65%) risk factor:",
+    "options": [
+      "Maternal anemia only",
+      "Delayed cord clamping, maternal diabetes, IUGR",
+      "Prematurity with hemorrhage",
+      "Rho(D) immunization"
+    ],
+    "answer": 1,
+    "exp": "Neonatal polycythemia is associated with delayed cord clamping, maternal diabetes, and intrauterine growth restriction (IUGR), which increase fetal RBC production. Maternal anemia, prematurity, or Rho(D) immunization are not primary causes."
+  },
+  {
+    "q": "Hemophagocytic lymphohistiocytosis (HLH) laboratory pattern:",
+    "options": [
+      "High fibrinogen, low ferritin",
+      "Hyperferritinemia, cytopenias, triglycerides, low/normal fibrinogen",
+      "Isolated neutrophilia",
+      "Hypouricemia"
+    ],
+    "answer": 1,
+    "exp": "HLH shows hyperferritinemia, cytopenias, high triglycerides, and low/normal fibrinogen due to uncontrolled immune activation. High fibrinogen, isolated neutrophilia, or hypouricemia are not typical."
+  },
+  {
+    "q": "Post-splenectomy blood smear finding:",
+    "options": [
+      "Döhle bodies",
+      "Howell-Jolly bodies and target cells",
+      "Auer rods",
+      "Pappenheimer bodies only"
+    ],
+    "answer": 1,
+    "exp": "Post-splenectomy smears show Howell-Jolly bodies (nuclear remnants) and target cells due to absent splenic clearance. Döhle bodies indicate infection, Auer rods are in AML, and Pappenheimer bodies are iron inclusions."
+  },
+  {
+    "q": "Which of the following cells is the precursor of all blood cells?",
+    "options": [
+      "Myeloblast",
+      "Proerythroblast",
+      "Hemocytoblast",
+      "Reticulocyte"
+    ],
+    "answer": 2,
+    "exp": "The hemocytoblast (hematopoietic stem cell) is the precursor of all blood cells, differentiating into myeloid and lymphoid lineages. Myeloblasts and proerythroblasts are lineage-specific, and reticulocytes are mature RBC precursors."
+  },
+  {
+    "q": "Which anticoagulant is used for full blood count (FBC)?",
+    "options": [
+      "Heparin",
+      "EDTA",
+      "Sodium citrate",
+      "Fluoride oxalate"
+    ],
+    "answer": 1,
+    "exp": "EDTA is used for FBC as it preserves cell morphology and prevents clotting by chelating calcium. Heparin and citrate are used for coagulation tests, and fluoride oxalate is for glucose testing."
+  },
+  {
+    "q": "The stain commonly used for peripheral blood film is:",
+    "options": [
+      "Ziehl-Neelsen",
+      "Giemsa",
+      "Leishman",
+      "Romanowsky"
+    ],
+    "answer": 3,
+    "exp": "Romanowsky stains (e.g., Giemsa, Leishman, Wright) are used for peripheral blood films to visualize cell morphology. Ziehl-Neelsen is for acid-fast bacteria."
+  },
+  {
+    "q": "Which organ is the major site of hematopoiesis in adults?",
     "options": [
       "Liver",
-      "Skin",
-      "Lungs",
-      "Kidneys"
+      "Kidney",
+      "Bone marrow",
+      "Spleen"
     ],
     "answer": 2,
-    "exp": "Aspergillus spores are inhaled and most commonly involve the lungs—causing allergic bronchopulmonary aspergillosis, invasive aspergillosis, or aspergilloma."
+    "exp": "Bone marrow is the primary site of hematopoiesis in adults, producing all blood cells. The liver and spleen are sites in fetal life, and the kidney produces erythropoietin but not blood cells."
   },
   {
-    "q": "Aspergillus commonly affects the:",
+    "q": "A high reticulocyte count indicates:",
     "options": [
-      "Liver",
-      "Skin",
-      "Lungs",
-      "Kidneys"
+      "Aplastic anemia",
+      "Active erythropoiesis",
+      "Iron deficiency",
+      "Vitamin B12 deficiency"
+    ],
+    "answer": 1,
+    "exp": "A high reticulocyte count indicates active erythropoiesis, often in response to hemolysis or blood loss. Aplastic anemia and deficiencies (iron, B12) typically show low reticulocytes due to impaired production."
+  },
+  {
+    "q": "Which white blood cell type is most abundant in peripheral blood?",
+    "options": [
+      "Lymphocytes",
+      "Basophils",
+      "Monocytes",
+      "Neutrophils"
+    ],
+    "answer": 3,
+    "exp": "Neutrophils are the most abundant white blood cells in peripheral blood (50-70%). Lymphocytes are second, while monocytes and basophils are less common."
+  },
+  {
+    "q": "Which of these is not a granulocyte?",
+    "options": [
+      "Eosinophil",
+      "Neutrophil",
+      "Monocyte",
+      "Basophil"
     ],
     "answer": 2,
-    "exp": "Lungs is correct based on the key laboratory/physiology principle tested in the stem."
+    "exp": "Monocytes are agranulocytes, while neutrophils, eosinophils, and basophils are granulocytes due to their cytoplasmic granules."
   },
   {
-    "q": "HIV primarily infects:",
+    "q": "An MCV of 65 fL indicates:",
     "options": [
-      "CD8+ cells",
-      "CD4+ T cells",
-      "B cells",
-      "Neutrophils"
+      "Normocytic anemia",
+      "Macrocytic anemia",
+      "Microcytic anemia",
+      "Aplastic anemia"
     ],
-    "answer": 1,
-    "exp": "CD4+ T cells is correct based on the key laboratory/physiology principle tested in the stem."
+    "answer": 2,
+    "exp": "An MCV of 65 fL indicates microcytic anemia (normal 80-100 fL), commonly due to iron deficiency or thalassemia. Normocytic anemia is 80-100 fL, macrocytic >100 fL, and aplastic anemia is not defined by MCV."
   },
   {
-    "q": "Hepatitis B virus is a:",
+    "q": "Which of these cells is enucleated?",
     "options": [
-      "DNA virus",
-      "RNA virus",
-      "Retrovirus",
-      "Prion"
+      "Eosinophil",
+      "Platelet",
+      "Neutrophil",
+      "Red blood cell"
     ],
-    "answer": 0,
-    "exp": "DNA virus is correct based on the key laboratory/physiology principle tested in the stem."
+    "answer": 3,
+    "exp": "Red blood cells are enucleated in mammals, losing their nucleus during maturation. Platelets are anucleate fragments, but eosinophils and neutrophils have nuclei."
   },
   {
-    "q": "Which virus causes cervical cancer?",
+    "q": "Hemoglobin is composed of:",
     "options": [
-      "Hepatitis C",
-      "HPV",
-      "EBV",
-      "HSV"
-    ],
-    "answer": 1,
-    "exp": "HPV is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "HIV primarily infects:",
-    "options": [
-      "CD8+ cells",
-      "CD4+ T cells",
-      "B cells",
-      "Neutrophils"
-    ],
-    "answer": 1,
-    "exp": "HIV targets CD4+ T helper lymphocytes via the CD4 receptor and CCR5/CXCR4 coreceptors, leading to progressive immunodeficiency. (It can also infect macrophages/DCs.)"
-  },
-  {
-    "q": "Hepatitis B virus is a:",
-    "options": [
-      "DNA virus",
-      "RNA virus",
-      "Retrovirus",
-      "Prion"
+      "4 globin chains and 4 heme groups",
+      "2 globin chains and 4 heme groups",
+      "4 heme groups only",
+      "2 heme groups and 2 globin chains"
     ],
     "answer": 0,
-    "exp": "DNA virus is correct based on the key laboratory/physiology principle tested in the stem."
+    "exp": "Hemoglobin consists of four globin chains (two alpha, two beta) and four heme groups, each containing an iron atom for oxygen binding."
   },
   {
-    "q": "Which virus causes cervical cancer?",
+    "q": "Which hormone stimulates red blood cell production?",
     "options": [
-      "Hepatitis C",
-      "HPV",
-      "EBV",
-      "HSV"
+      "Insulin",
+      "Erythropoietin",
+      "Renin",
+      "Calcitonin"
     ],
     "answer": 1,
-    "exp": "Persistent infection with high‑risk human papillomavirus (HPV), especially types 16 and 18, is the main cause of cervical cancer."
+    "exp": "Erythropoietin, produced by the kidneys, stimulates red blood cell production in the bone marrow. Insulin, renin, and calcitonin have unrelated functions."
   },
   {
-    "q": "The causative agent of measles is:",
+    "q": "The term 'leukocytosis' refers to:",
     "options": [
-      "Rubella virus",
-      "Measles virus",
-      "Mumps virus",
-      "RSV"
+      "Decrease in WBC count",
+      "Increase in RBC count",
+      "Increase in WBC count",
+      "Presence of immature RBCs"
     ],
-    "answer": 0,
-    "exp": "Rubella virus is correct based on the key laboratory/physiology principle tested in the stem."
+    "answer": 2,
+    "exp": "Leukocytosis refers to an increased white blood cell count (>11,000/µL). Decreased WBC is leukopenia, increased RBC is erythrocytosis, and immature RBCs are reticulocytes."
   },
   {
-    "q": "SARS-Cov-2 belongs to the family:",
+    "q": "The buffy coat in a centrifuged blood sample contains:",
     "options": [
-      "Retroviridae",
-      "Paramyxoviridae",
-      "Coronaviridae",
-      "Flaviviridae"
+      "Only plasma",
+      "Only red cells",
+      "White blood cells and platelets",
+      "Serum"
+    ],
+    "answer": 2,
+    "exp": "The buffy coat, a thin layer in centrifuged blood, contains white blood cells and platelets. Plasma is the supernatant, red cells are at the bottom, and serum lacks clotting factors."
+  },
+  {
+    "q": "Acanthocytes are commonly seen in:",
+    "options": [
+      "Thalassemia",
+      "Liver disease",
+      "Iron deficiency",
+      "Megaloblastic anemia"
+    ],
+    "answer": 1,
+    "exp": "Acanthocytes (spur cells) are common in severe liver disease due to lipid membrane abnormalities. Thalassemia shows target cells, iron deficiency microcytic cells, and megaloblastic anemia macrocytic cells."
+  },
+  {
+    "q": "Which of these is not part of the complete blood count?",
+    "options": [
+      "ESR",
+      "WBC",
+      "Hemoglobin",
+      "Platelet count"
     ],
     "answer": 0,
-    "exp": "Retroviridae is correct based on the key laboratory/physiology principle tested in the stem."
+    "exp": "Erythrocyte sedimentation rate (ESR) is not part of the complete blood count (CBC), which includes WBC, hemoglobin, hematocrit, RBC indices, and platelet count. ESR measures inflammation."
+  },
+  {
+    "q": "Which of these indices is calculated using RBC, HGB, and HCT values?",
+    "options": [
+      "MCH",
+      "MCV",
+      "MCHC",
+      "All of the above"
+    ],
+    "answer": 3,
+    "exp": "MCV (HCT/RBC), MCH (HGB/RBC), and MCHC (HGB/HCT) are all calculated using red blood cell count (RBC), hemoglobin (HGB), and hematocrit (HCT) values."
+  },
+  {
+    "q": "Which of these is a nucleated RBC precursor?",
+    "options": [
+      "Reticulocyte",
+      "Erythroblast",
+      "Mature RBC",
+      "None"
+    ],
+    "answer": 1,
+    "exp": "Erythroblasts (e.g., normoblasts) are nucleated RBC precursors in the bone marrow. Reticulocytes and mature RBCs are anucleate."
+  },
+  {
+    "q": "Which cell is responsible for phagocytosis of bacteria?",
+    "options": [
+      "Lymphocyte",
+      "Neutrophil",
+      "Basophil",
+      "Eosinophil"
+    ],
+    "answer": 1,
+    "exp": "Neutrophils are the primary phagocytes for bacteria, using granules and oxidative bursts. Lymphocytes mediate adaptive immunity, basophils release histamine, and eosinophils target parasites."
+  },
+  {
+    "q": "What is the function of platelets?",
+    "options": [
+      "Oxygen transport",
+      "Defense against pathogens",
+      "Blood clotting",
+      "Nutrient transport"
+    ],
+    "answer": 2,
+    "exp": "Platelets are critical for blood clotting, forming plugs and releasing factors to promote hemostasis. RBCs transport oxygen, WBCs defend against pathogens, and nutrients are carried in plasma."
+  },
+  {
+    "q": "Which anticoagulant is present in blue top tubes?",
+    "options": [
+      "Heparin",
+      "EDTA",
+      "Sodium citrate",
+      "Oxalate"
+    ],
+    "answer": 2,
+    "exp": "Blue top tubes contain sodium citrate, used for coagulation tests (e.g., PT, aPTT) by chelating calcium. EDTA is for CBC, heparin for plasma chemistry, and oxalate for glucose."
+  },
+  {
+    "q": "Which factor is deficient in Christmas disease?",
+    "options": [
+      "VIII",
+      "IX",
+      "XI",
+      "XIII"
+    ],
+    "answer": 1,
+    "exp": "Christmas disease is hemophilia B, caused by Factor IX deficiency. Factor VIII deficiency causes hemophilia A, and XI/XIII deficiencies are rarer bleeding disorders."
+  },
+  {
+    "q": "Platelet count is measured using:",
+    "options": [
+      "Neubauer chamber",
+      "Colorimeter",
+      "ELISA",
+      "Clotting analyser"
+    ],
+    "answer": 0,
+    "exp": "Platelet counts are performed manually using a Neubauer chamber or automated hematology analyzers. Colorimeters measure hemoglobin, ELISA detects antibodies, and clotting analyzers assess coagulation."
+  },
+  {
+    "q": "Which of the following is an antiplatelet drug?",
+    "options": [
+      "Warfarin",
+      "Heparin",
+      "Aspirin",
+      "Dabigatran"
+    ],
+    "answer": 2,
+    "exp": "Aspirin inhibits platelet aggregation by blocking cyclooxygenase. Warfarin and dabigatran are anticoagulants affecting clotting factors, and heparin inhibits thrombin and Factor Xa."
+  },
+  {
+    "q": "A prolonged PT with normal aPTT indicates:",
+    "options": [
+      "Haemophilia",
+      "Factor VII deficiency",
+      "DIC",
+      "Platelet disorder"
+    ],
+    "answer": 1,
+    "exp": "Prolonged PT with normal aPTT suggests a defect in the extrinsic pathway, typically Factor VII deficiency. Hemophilia affects aPTT, DIC prolongs both, and platelet disorders do not affect PT/aPTT."
   },
   {
     "q": "The universal donor blood group is:",
     "options": [
       "AB+",
       "O+",
-      "O-",
-      "A-"
-    ],
-    "answer": 2,
-    "exp": "Group O‑ red cells lack A, B and Rh(D) antigens, so they can be transfused to any recipient—hence the universal RBC donor. (Plasma universal donor is AB.)"
-  },
-  {
-    "q": "Which antigen is responsible for hemolytic disease of the newborn?",
-    "options": [
-      "A antigen",
-      "B antigen",
-      "Rh D antigen",
-      "H antigen"
-    ],
-    "answer": 2,
-    "exp": "Hemolytic disease of the newborn is classically due to maternal anti‑D IgG crossing the placenta when an Rh‑negative mother carries an Rh‑positive fetus (Rh D antigen)."
-  },
-  {
-    "q": "The most common blood group in the world is:",
-    "options": [
-      "A",
-      "B",
-      "AB",
-      "O"
+      "AB-",
+      "O-"
     ],
     "answer": 3,
-    "exp": "Globally, blood group O is the most prevalent, though frequency varies by population."
+    "exp": "O negative is the universal donor for RBCs, lacking A, B, and Rh antigens, minimizing incompatibility. AB+ is the universal recipient."
   },
   {
-    "q": "Which of the following is a major crossmatch?",
-    "options": [
-      "Donor serum + recipient cells",
-      "Recipient serum + donor cells",
-      "Donor RBC + saline",
-      "None"
-    ],
-    "answer": 1,
-    "exp": "Major crossmatch = recipient serum/plasma tested against donor red blood cells to detect recipient antibodies that would react with donor RBC antigens."
-  },
-  {
-    "q": "Packed red cells are stored at:",
-    "options": [
-      "4°C",
-      "-20°C",
-      "Room temperature",
-      "37°C"
-    ],
-    "answer": 0,
-    "exp": "4°C D is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Fresh frozen plasma (FFP) is rich in:",
-    "options": [
-      "RBCs",
-      "Clotting factors",
-      "Platelets",
-      "Option 4"
-    ],
-    "answer": 1,
-    "exp": "FFP contains coagulation proteins and is rich in clotting factors; used to replace multiple factor deficiencies."
-  },
-  {
-    "q": "Crossmatch incompatibility indicates:",
-    "options": [
-      "Same blood group",
-      "Antibody-antigen reaction",
-      "Clotting",
-      "Donor anemia"
-    ],
-    "answer": 1,
-    "exp": "A positive crossmatch indicates an antibody–antigen reaction between recipient serum and donor red‑cell antigens (agglutination/hemolysis), so the unit is incompatible."
-  },
-  {
-    "q": "Which blood product prevents febrile transfusion reactions?",
-    "options": [
-      "Washed RBCs",
-      "Whole blood",
-      "Platelets",
-      "Cryoprecipitate"
-    ],
-    "answer": 0,
-    "exp": "Washed RBCs D is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "The Rh system was discovered by:",
-    "options": [
-      "Landsteiner and Weiner",
-      "Pasteur",
-      "Koch",
-      "Karl Marx"
-    ],
-    "answer": 0,
-    "exp": "Landsteiner and Weiner is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Which of the following is used to screen blood donors for HIV?",
-    "options": [
-      "ELISA",
-      "PCR",
-      "Western blot",
-      "Blood smear"
-    ],
-    "answer": 0,
-    "exp": "ELISA D is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "The causative agent of serum hepatitis is:",
-    "options": [
-      "HAV",
-      "HBV",
-      "HCV",
-      "HDV"
-    ],
-    "answer": 1,
-    "exp": "HBV is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Negri bodies are diagnostic of:",
-    "options": [
-      "Measles",
-      "Rabies",
-      "Influenza",
-      "Polio"
-    ],
-    "answer": 1,
-    "exp": "Rabies is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Reverse transcriptase is an enzyme associated with:",
-    "options": [
-      "DNA viruses",
-      "RNA viruses (retroviruses)",
-      "Bacteriophages",
-      "Prions"
-    ],
-    "answer": 1,
-    "exp": "RNA viruses (retroviruses) is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "ESR mainly depends on:",
-    "options": [
-      "WBC count",
-      "Plasma fibrinogen and globulins",
-      "Hemoglobin level",
-      "Platelet count"
-    ],
-    "answer": 1,
-    "exp": "ESR rises with increased fibrinogen/inflammation; it is a nonspecific marker."
-  },
-  {
-    "q": "The primary energy source for the brain under normal conditions is:",
-    "options": [
-      "Fatty acids",
-      "Glucose",
-      "Ketone bodies",
-      "Amino acids"
-    ],
-    "answer": 1,
-    "exp": "Glucose is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "A biological safety cabinet (Class I) is mainly used for:",
-    "options": [
-      "Radioactive substances",
-      "Sterile water preparation",
-      "Handling infectious clinical samples",
-      "Histological staining"
-    ],
-    "answer": 2,
-    "exp": "Handling infectious clinical samples is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "The main storage form of glucose in the human body is:",
-    "options": [
-      "Glucagon",
-      "Glycogen",
-      "Insulin",
-      "Lactate"
-    ],
-    "answer": 1,
-    "exp": "Glycogen is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "The enzyme most specific for diagnosis of acute pancreatitis is.",
-    "options": [
-      "AsT",
-      "Lipase",
-      "LDH",
-      "CK-MB"
-    ],
-    "answer": 1,
-    "exp": "Lipase is more specific for acute pancreatitis and remains elevated longer than amylase."
-  },
-  {
-    "q": "The anticoagulant used for blood glucose estimation is:",
-    "options": [
-      "EDTA",
-      "Sodium fluoride",
-      "Heparin",
-      "Citrate"
-    ],
-    "answer": 1,
-    "exp": "Fluoride (often with oxalate) preserves glucose by inhibiting glycolysis (enolase) after collection."
-  },
-  {
-    "q": "The primary buffer system in blood is:",
-    "options": [
-      "Hemoglobin buffer",
-      "Protein buffer",
-      "Bicarbonate buffer",
-      "Phosphate buffer"
-    ],
-    "answer": 2,
-    "exp": "Bicarbonate buffer is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Normal fasting blood glucose level is:",
-    "options": [
-      "70-110 mg/dL",
-      "40-70 mg/dL",
-      "110-150 mg/dL",
-      "150-200 mg/dL"
-    ],
-    "answer": 0,
-    "exp": "70-110 mg/dL is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Increased serum urea with normal creatinine suggests:",
-    "options": [
-      "Renal failure",
-      "Dehydration",
-      "Hepatitis",
-      "Nephrotic syndrome"
-    ],
-    "answer": 1,
-    "exp": "BUN/urea varies with hydration and catabolism; less specific for GFR than creatinine."
-  },
-  {
-    "q": "Which lipoprotein is termed \"bad cholesterol\"?",
-    "options": [
-      "HDL",
-      "LDL",
-      "VLDL",
-      "Chylomicron"
-    ],
-    "answer": 1,
-    "exp": "LDL delivers cholesterol to tissues and promotes atheroma formation (“bad cholesterol”)."
-  },
-  {
-    "q": "The normal reference range for serum sodium is:",
-    "options": [
-      "100-110 mmol/L",
-      "135-145 mmol/L",
-      "150-160 mmol/L",
-      "90-100 mmol/L"
-    ],
-    "answer": 1,
-    "exp": "135-145 mmol/L is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "The confirmatory test for diabetes mellitus is:",
-    "options": [
-      "Random glucose",
-      "Urine glucose",
-      "Oral glucose tolerance test",
-      "HbAlc only"
-    ],
-    "answer": 2,
-    "exp": "Oral glucose tolerance test is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Hypocalcemia is commonly seen in:",
-    "options": [
-      "Hyperparathyroidism",
-      "Vitamin D deficiency",
-      "Osteopetrosis",
-      "Multiple myeloma"
-    ],
-    "answer": 1,
-    "exp": "Vitamin D deficiency is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Alkaline phosphatase (ALP) is elevated in:",
-    "options": [
-      "Hepatitis",
-      "Biliary obstruction",
-      "Myocardial infarction",
-      "Pancreatitis"
-    ],
-    "answer": 1,
-    "exp": "Biliary obstruction is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "The end product of purine metabolism in humans is:",
-    "options": [
-      "Uric acid",
-      "Ammonia",
-      "Creatinine",
-      "Urea"
-    ],
-    "answer": 0,
-    "exp": "Key dipstick targets: protein, glucose, ketones, blood, nitrite/leukocyte esterase for UTI screening."
-  },
-  {
-    "q": "Respiratory acidosis is caused by:",
-    "options": [
-      "Hypoventilation",
-      "Hyperventilation",
-      "Vomiting",
-      "Diarrhea"
-    ],
-    "answer": 0,
-    "exp": "Respiratory acidosis: ↑PaCO₂ (hypoventilation) with compensatory ↑HCO₃⁻."
-  },
-  {
-    "q": "A common tumor marker for prostate cancer is:",
-    "options": [
-      "CEA",
-      "AFP",
-      "PSA",
-      "CA-125"
-    ],
-    "answer": 2,
-    "exp": "PSA is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "The main function of albumin in plasma is:",
-    "options": [
-      "Buffering",
-      "Osmotic pressure maintenance",
-      "Oxygen transport",
-      "Enzyme activity"
-    ],
-    "answer": 1,
-    "exp": "Osmotic pressure maintenance is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Normal hemoglobin level in adult males is:",
-    "options": [
-      "9-11 g/dL.",
-      "12-14 g/dL",
-      "13-17 g/dL",
-      "18-20 g/dL."
-    ],
-    "answer": 2,
-    "exp": "13-17 g/dL is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "The anticoagulant of choice for hematology test is:",
-    "options": [
-      "Sodium citrate",
-      "EDTA",
-      "Heparin",
-      "Oxalate"
-    ],
-    "answer": 1,
-    "exp": "EDTA chelates calcium and is the anticoagulant of choice for hematology tests (CBC and blood films)."
-  },
-  {
-    "q": "Howell-Jolly bodies are remnants of:",
-    "options": [
-      "Mitochondria",
-      "Ribosomes",
-      "Nucleus",
-      "Golgi body."
-    ],
-    "answer": 2,
-    "exp": "Nucleus is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "The coagulation factor deficient in hemophilia A is:",
-    "options": [
-      "VIII",
-      "IX",
-      "XI",
-      "XII"
-    ],
-    "answer": 0,
-    "exp": "VIII is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Reticulocyte count is useful in:",
-    "options": [
-      "Diagnosis of leukemia",
-      "Assessment of bone marrow activity",
-      "Detection of malaria",
-      "Identification of anemia type"
-    ],
-    "answer": 1,
-    "exp": "Assessment of bone marrow activity is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Rouleaux formation of RBCs is seen in:",
-    "options": [
-      "Sickle cell anemia",
-      "Multiple myeloma",
-      "Iron deficiency anemia",
-      "Malaria"
-    ],
-    "answer": 1,
-    "exp": "Multiple myeloma is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": ". The universal blood donor group is:",
+    "q": "The universal recipient blood group is:",
     "options": [
       "AB+",
       "O+",
-      "O-",
-      "AB-"
-    ],
-    "answer": 2,
-    "exp": "O- is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": ". Heinz bodies are associated with:",
-    "options": [
-      "G6PD deficiency",
-      "Megaloblastic anemia",
-      "Iron deficiency anemia",
-      "Sickle cell anemia"
+      "AB-",
+      "O-"
     ],
     "answer": 0,
-    "exp": "G6PD deficiency is correct based on the key laboratory/physiology principle tested in the stem."
+    "exp": "AB positive is the universal recipient for RBCs, as it has A, B, and Rh antigens and no corresponding antibodies to cause reactions."
   },
   {
-    "q": ". Normal platelet count is:",
+    "q": "The most antigenic Rh antigen is:",
     "options": [
-      "10-50 × 100/L",
-      "50-100 × 100/L",
-      "150-450 × 10^9/L",
-      "500-1000 × 100/L"
+      "C",
+      "E",
+      "D",
+      "c"
     ],
     "answer": 2,
-    "exp": "150-450 × 100/1 is correct based on the key laboratory/physiology principle tested in the stem."
+    "exp": "The D antigen (RhD) is the most antigenic in the Rh system, responsible for most hemolytic transfusion reactions and hemolytic disease of the newborn."
   },
   {
-    "q": "The anticoagulant used in coagulation studies is:",
+    "q": "Crossmatching is done to:",
     "options": [
-      "Heparin",
-      "Sodium citrate",
+      "Determine blood group",
+      "Screen for malaria",
+      "Detect antibody incompatibility",
+      "Measure haemoglobin"
+    ],
+    "answer": 2,
+    "exp": "Crossmatching tests donor RBCs with recipient serum to detect antibody incompatibilities, ensuring safe transfusion. Blood grouping is separate, and malaria screening or hemoglobin measurement are unrelated."
+  },
+  {
+    "q": "Which test is used to detect antibodies in a patient’s serum?",
+    "options": [
+      "Direct Coombs",
+      "Indirect Coombs",
+      "Blood grouping",
+      "Electrophoresis"
+    ],
+    "answer": 1,
+    "exp": "The indirect Coombs test detects antibodies in patient serum that may react with donor RBCs. The direct Coombs test detects antibodies on RBCs, blood grouping identifies ABO/Rh, and electrophoresis is for hemoglobinopathies."
+  },
+  {
+    "q": "Which of the following is not tested during blood donor screening?",
+    "options": [
+      "HIV",
+      "Hepatitis B",
+      "Cholesterol",
+      "Syphilis"
+    ],
+    "answer": 2,
+    "exp": "Blood donor screening tests for infectious diseases like HIV, hepatitis B, and syphilis to ensure safety. Cholesterol is not relevant to transfusion safety."
+  },
+  {
+    "q": "Massive blood transfusion can lead to:",
+    "options": [
+      "Hypercalcaemia",
+      "Hyperkalaemia",
+      "Hyperglycaemia",
+      "Polycythaemia"
+    ],
+    "answer": 1,
+    "exp": "Massive transfusion can cause hyperkalemia due to potassium leakage from stored RBCs. Hypercalcemia, hyperglycemia, and polycythemia are not typical complications."
+  },
+  {
+    "q": "The anticoagulant used in blood bags is:",
+    "options": [
       "EDTA",
-      "Potassium oxalate"
+      "Heparin",
+      "CPDA-1",
+      "Sodium citrate"
     ],
-    "answer": 1,
-    "exp": "Citrate binds calcium reversibly—blue top—for coagulation assays (PT/aPTT)."
+    "answer": 2,
+    "exp": "CPDA-1 (citrate-phosphate-dextrose-adenine) is used in blood bags to prevent clotting and preserve RBCs. EDTA and citrate are for lab tests, and heparin is not used in storage."
   },
   {
-    "q": "MCV refers to:",
+    "q": "Febrile non-haemolytic transfusion reactions are usually due to:",
     "options": [
-      "Mean cell value",
-      "Mean corpuscular volume",
-      "Maximum clotting value",
-      "Mean chemical volume"
+      "ABO incompatibility",
+      "Bacterial contamination",
+      "Cytokines from donor leukocytes",
+      "Iron overload"
     ],
-    "answer": 1,
-    "exp": "Mean corpuscular volume is correct based on the key laboratory/physiology principle tested in the stem."
+    "answer": 2,
+    "exp": "Febrile non-hemolytic reactions are caused by cytokines from donor leukocytes, prevented by leukoreduction. ABO incompatibility causes hemolytic reactions, bacterial contamination causes sepsis, and iron overload is chronic."
   },
   {
-    "q": "\"Target cells\" are commonly seen in:",
+    "q": "Autologous transfusion means:",
     "options": [
+      "Receiving own blood",
+      "Blood from identical twin",
+      "Blood from sibling",
+      "Artificial blood products"
+    ],
+    "answer": 0,
+    "exp": "Autologous transfusion involves receiving one’s own blood, collected preoperatively or intraoperatively, to avoid alloimmunization. Other options are allogeneic or synthetic."
+  },
+  {
+    "q": "A Neubauer counting chamber is used for:",
+    "options": [
+      "Blood grouping",
+      "Platelet function testing",
+      "Manual cell counting",
+      "Electrophoresis"
+    ],
+    "answer": 2,
+    "exp": "The Neubauer chamber is used for manual cell counting (e.g., RBCs, WBCs, platelets) under a microscope. It is not used for blood grouping, platelet function, or electrophoresis."
+  },
+  {
+    "q": "What is the diluting fluid used for RBC counting?",
+    "options": [
+      "Turk’s solution",
+      "Hayem’s solution",
+      "Leishman’s stain",
+      "Normal saline"
+    ],
+    "answer": 1,
+    "exp": "Hayem’s solution is used for RBC counting, as it preserves RBCs and prevents lysis. Turk’s solution is for WBCs, Leishman’s for staining, and normal saline is not specific."
+  },
+  {
+    "q": "The stain used for reticulocyte count is:",
+    "options": [
+      "Leishman stain",
+      "Giemsa stain",
+      "New methylene blue",
+      "Wright’s stain"
+    ],
+    "answer": 2,
+    "exp": "New methylene blue is a supravital stain used to visualize reticulocytes by staining their RNA. Leishman, Giemsa, and Wright’s stains are for general morphology."
+  },
+  {
+    "q": "Which instrument measures haemoglobin concentration?",
+    "options": [
+      "Microscope",
+      "Colorimeter",
+      "Spectrophotometer",
+      "Both B and C"
+    ],
+    "answer": 3,
+    "exp": "Hemoglobin concentration is measured using colorimeters or spectrophotometers, which quantify hemoglobin based on light absorption. Microscopes are for morphology."
+  },
+  {
+    "q": "Hemocytometer is used for:",
+    "options": [
+      "ESR",
+      "Cell counting",
+      "Hemoglobin estimation",
+      "Blood typing"
+    ],
+    "answer": 1,
+    "exp": "A hemocytometer (e.g., Neubauer chamber) is used for manual cell counting (RBCs, WBCs, platelets) under a microscope. ESR measures inflammation, hemoglobin by spectrometry, and blood typing by serology."
+  },
+  {
+    "q": "The internal quality control in haematology involves:",
+    "options": [
+      "Comparing with peer labs",
+      "Reagent expiry dates",
+      "Daily charting of controls",
+      "Manual count only"
+    ],
+    "answer": 2,
+    "exp": "Internal quality control in hematology involves daily charting of control samples to ensure analyzer accuracy. Comparing with peer labs is external quality control, reagent expiry is part of lab management, and manual counts are not sufficient alone."
+  },
+  {
+    "q": "The function of a diluent in WBC counting is to:",
+    "options": [
+      "Lyse RBCs",
+      "Stain cells",
+      "Increase viscosity",
+      "Preserve the sample"
+    ],
+    "answer": 0,
+    "exp": "The diluent (e.g., Turk’s solution) in WBC counting lyses RBCs to allow accurate counting of white blood cells under a microscope. Staining is a separate step, viscosity is irrelevant, and preservation is not the primary function."
+  },
+  {
+    "q": "Peripheral blood film should be examined under:",
+    "options": [
+      "4× objective",
+      "10× objective",
+      "40× objective",
+      "100× oil immersion"
+    ],
+    "answer": 3,
+    "exp": "Peripheral blood films are examined under a 100× oil immersion objective for detailed cell morphology (e.g., RBC shape, WBC differential). Lower magnifications (4×, 10×, 40×) are insufficient for fine details."
+  },
+  {
+    "q": "Which stain is used to differentiate myeloblasts in AML?",
+    "options": [
+      "Sudan black B",
+      "Leishman",
+      "Gram stain",
+      "Giemsa"
+    ],
+    "answer": 0,
+    "exp": "Sudan black B stains lipid-rich granules in myeloblasts, aiding differentiation in AML. Leishman and Giemsa are general stains for morphology, and Gram stain is for bacteria, not relevant to AML."
+  },
+  {
+    "q": "What is the ESR used to detect?",
+    "options": [
+      "Anaemia",
+      "Inflammation",
+      "Leukopenia",
+      "Bleeding disorder"
+    ],
+    "answer": 1,
+    "exp": "Erythrocyte sedimentation rate (ESR) measures inflammation by assessing how quickly RBCs settle, elevated in conditions like infection or autoimmune disease. It is not specific for anemia, leukopenia, or bleeding disorders."
+  },
+  {
+    "q": "Iron deficiency anemia shows:",
+    "options": [
+      "Macrocytic cells",
+      "Normocytic cells",
+      "Microcytic hypochromic cells",
+      "Spherocytes"
+    ],
+    "answer": 2,
+    "exp": "Iron deficiency anemia is characterized by microcytic (low MCV) and hypochromic (low MCHC) RBCs due to impaired hemoglobin synthesis. Macrocytic cells are seen in B12/folate deficiency, normocytic in chronic disease, and spherocytes in hemolysis."
+  },
+  {
+    "q": "Pernicious anaemia is due to deficiency of:",
+    "options": [
+      "Iron",
+      "Folate",
+      "Vitamin B12",
+      "Copper"
+    ],
+    "answer": 2,
+    "exp": "Pernicious anemia results from vitamin B12 deficiency, often due to autoimmune destruction of gastric parietal cells, impairing intrinsic factor production. Iron, folate, and copper deficiencies cause other anemias."
+  },
+  {
+    "q": "Sickle cell disease is caused by mutation in:",
+    "options": [
+      "Beta-globin chain",
+      "Alpha-globin chain",
+      "Hemoglobin F",
+      "Hemoglobin A2"
+    ],
+    "answer": 0,
+    "exp": "Sickle cell disease is caused by a point mutation in the beta-globin gene (HBB), producing HbS. Alpha-globin mutations cause alpha-thalassemia, and HbF/A2 are not mutated in sickle cell disease."
+  },
+  {
+    "q": "A diagnostic test for sickle cell anemia is:",
+    "options": [
+      "Coombs test",
+      "Solubility test",
+      "Osmotic fragility test",
+      "Schilling test"
+    ],
+    "answer": 1,
+    "exp": "The sickle solubility test detects HbS by its reduced solubility in deoxygenated conditions, aiding sickle cell anemia diagnosis. Coombs test is for immune hemolysis, osmotic fragility for spherocytosis, and Schilling for B12 absorption."
+  },
+  {
+    "q": "Thalassemia results from defect in:",
+    "options": [
+      "Platelet function",
+      "White cells",
+      "Globin chain synthesis",
+      "Iron absorption"
+    ],
+    "answer": 2,
+    "exp": "Thalassemia is caused by defective globin chain synthesis (alpha or beta), leading to imbalanced hemoglobin production. Platelet function, white cells, and iron absorption are not primarily affected."
+  },
+  {
+    "q": "Target cells are most commonly seen in:",
+    "options": [
+      "Iron deficiency",
+      "Sickle cell disease",
       "Thalassemia",
-      "Iron deficiency anemia",
-      "Malaria",
-      "Leukemia"
+      "Aplastic anaemia"
     ],
-    "answer": 0,
-    "exp": "Thalassemia is correct based on the key laboratory/physiology principle tested in the stem."
+    "answer": 2,
+    "exp": "Target cells (codocytes) are most commonly seen in thalassemia due to excess membrane relative to hemoglobin content. They can occur in sickle cell disease but are less prominent, and iron deficiency or aplastic anemia do not typically show target cells."
   },
   {
-    "q": "The best test for monitoring long-term anticoagulant therapy (warfarin) is:",
+    "q": "The test used to measure serum iron levels is:",
     "options": [
-      "APTT",
-      "PT/INR",
-      "Bleeding time",
-      "Thrombin time"
+      "TIBC",
+      "Serum ferritin",
+      "Bone marrow biopsy",
+      "Serum creatinine"
     ],
     "answer": 1,
-    "exp": "PT/INR is correct based on the key laboratory/physiology principle tested in the stem."
+    "exp": "Serum ferritin measures stored iron levels, reflecting iron status. TIBC assesses iron-binding capacity, bone marrow biopsy evaluates iron stores invasively, and serum creatinine is unrelated to iron."
   },
   {
-    "q": "• The anticoagulant ratio of blood to citrate in coagulation testing is:",
+    "q": "Smudge cells on blood film are seen in:",
     "options": [
-      "9:1",
-      "1:9",
-      "5:1",
-      "1:5"
+      "CML",
+      "ALL",
+      "CLL",
+      "AML"
     ],
-    "answer": 0,
-    "exp": "9:1 is correct based on the key laboratory/physiology principle tested in the stem."
+    "answer": 2,
+    "exp": "Smudge cells (disrupted lymphocytes) are characteristic of chronic lymphocytic leukemia (CLL) due to fragile B-cells. They are not typical in CML, ALL, or AML, which show different smear findings."
   },
   {
-    "q": "Spherocytes are associated with:",
+    "q": "A 25-year-old male presents with pallor and jaundice. Peripheral smear shows spherocytes. The direct Coombs test is positive. Which is the most likely diagnosis?\"",
     "options": [
       "Hereditary spherocytosis",
-      "Thalassemia",
+      "Autoimmune hemolytic anemia",
+      "G6PD deficiency",
+      "Sickle cell disease"
+    ],
+    "answer": 1,
+    "exp": "The positive direct Coombs test indicates immune-mediated hemolysis, characteristic of autoimmune hemolytic anemia (AIHA). Spherocytes are seen due to antibody-mediated red cell destruction. Hereditary spherocytosis typically has a negative Coombs test, G6PD deficiency shows bite cells/Heinz bodies, and sickle cell disease shows sickle-shaped cells, not spherocytes."
+  },
+  {
+    "q": "Which of the following findings best distinguishes iron deficiency anemia from thalassemia trait?\"",
+    "options": [
+      "Low MCV",
+      "Target cells",
+      "Normal serum ferritin",
+      "Hypochromia"
+    ],
+    "answer": 2,
+    "exp": "Normal or high serum ferritin distinguishes thalassemia trait from iron deficiency anemia (IDA), where ferritin is low due to depleted iron stores. Both conditions show low MCV and hypochromia, and target cells are seen in thalassemia but not specific enough to differentiate."
+  },
+  {
+    "q": "Heinz bodies are best visualized with:\"",
+    "options": [
+      "Leishman stain",
+      "Supravital stain (e.g., crystal violet)",
+      "PAS stain",
+      "Prussian blue stain"
+    ],
+    "answer": 1,
+    "exp": "Heinz bodies, denatured hemoglobin in RBCs, are best seen with supravital stains like crystal violet or new methylene blue, which highlight these inclusions in viable cells. Leishman and PAS stains are not specific for Heinz bodies, and Prussian blue stains iron."
+  },
+  {
+    "q": "Which cytogenetic abnormality is most specific for chronic myeloid leukemia (CML)?\"",
+    "options": [
+      "t(8;21)",
+      "t(15;17)",
+      "t(9;22)",
+      "t(14;18)"
+    ],
+    "answer": 2,
+    "exp": "The t(9;22) translocation, known as the Philadelphia chromosome, is the hallmark of CML, resulting in the BCR-ABL1 fusion gene. Other translocations are associated with AML (t(8;21), t(15;17)) or follicular lymphoma (t(14;18))."
+  },
+  {
+    "q": "A patient has prolonged PT and aPTT with normal thrombin time. Which deficiency is most likely?\"",
+    "options": [
+      "Factor VII",
+      "Factor VIII",
+      "Factor X",
+      "Fibrinogen"
+    ],
+    "answer": 2,
+    "exp": "Prolonged PT and aPTT with normal thrombin time suggest a deficiency in the common pathway (Factors X, V, II). Factor X deficiency is most likely. Factor VII deficiency affects only PT, Factor VIII affects only aPTT, and fibrinogen deficiency prolongs thrombin time."
+  },
+  {
+    "q": "In paroxysmal nocturnal hemoglobinuria (PNH)",
+    "options": [
+      "which diagnostic test is most specific?\"",
+      "Ham's test",
+      "Sucrose lysis test",
+      "Flow cytometry for CD55/CD59"
+    ],
+    "answer": 2,
+    "exp": "C"
+  },
+  {
+    "q": "A 5-year-old presents with pancytopenia. Bone marrow biopsy shows hypocellularity with fat spaces. Diagnosis?\"",
+    "options": [
+      "Acute lymphoblastic leukemia",
+      "Aplastic anemia",
+      "Myelodysplastic syndrome",
+      "Megaloblastic anemia"
+    ],
+    "answer": 1,
+    "exp": "Pancytopenia with a hypocellular bone marrow and fat replacement is diagnostic of aplastic anemia. ALL shows hypercellular marrow with blasts, MDS has dysplastic features, and megaloblastic anemia shows megaloblasts, not hypocellularity."
+  },
+  {
+    "q": "Which of the following is the most common cause of microcytic hypochromic anemia worldwide?\"",
+    "options": [
+      "Sideroblastic anemia",
       "Iron deficiency anemia",
-      "Aplastic anemia"
+      "Thalassemia minor",
+      "Lead poisoning"
+    ],
+    "answer": 1,
+    "exp": "Iron deficiency anemia is the most common cause of microcytic hypochromic anemia globally due to dietary deficiency, blood loss, or malabsorption. Thalassemia is common in specific regions, while sideroblastic anemia and lead poisoning are rarer."
+  },
+  {
+    "q": "A patient has hemophilia A. Which laboratory finding is most consistent?\"",
+    "options": [
+      "Normal PT, prolonged aPTT",
+      "Prolonged PT, normal aPTT",
+      "Prolonged thrombin time",
+      "Low fibrinogen"
     ],
     "answer": 0,
-    "exp": "Hereditary spherocytosis is correct based on the key laboratory/physiology principle tested in the stem."
+    "exp": "Hemophilia A (Factor VIII deficiency) affects the intrinsic pathway, leading to a prolonged aPTT with normal PT. Thrombin time and fibrinogen levels are normal, as the defect is upstream in the coagulation cascade."
   },
   {
-    "q": ". The Gram stain was developed by:",
+    "q": "Which RBC index is most reliable for differentiating iron deficiency anemia from thalassemia trait?\"",
     "options": [
-      "Pasteur",
-      "Gram",
-      "Koch",
-      "Fleming"
+      "MCH",
+      "MCV",
+      "RDW",
+      "Mentzer index"
     ],
-    "answer": 1,
-    "exp": "Use classic bench tests (Gram, catalase/coagulase, oxidase, etc.) to differentiate common pathogens."
+    "answer": 3,
+    "exp": "The Mentzer index (MCV/RBC count) is most reliable, with <13 favoring thalassemia trait and >13 suggesting IDA. MCV and MCH are low in both, and RDW is typically high in IDA but less specific."
   },
   {
-    "q": "The causative agent of tuberculosis is:",
+    "q": "Auer rods are characteristically seen in:\"",
     "options": [
-      "Mycobacterium leprae",
-      "Mycobacterium tuberculosis",
-      "Klebsiella pneumoniae",
-      "Bacillus anthracis"
-    ],
-    "answer": 1,
-    "exp": "Mycobacterium tuberculosis is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "The most common cause of urinary tract infection is:",
-    "options": [
-      "Staphylococcus aureus",
-      "Escherichia coli",
-      "Pseudomonas aeruginosa",
-      "Proteus mirabilis"
-    ],
-    "answer": 1,
-    "exp": "Escherichia coli is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Bacterial spores are resistant to:",
-    "options": [
-      "Heat and chemicals",
-      "UV radiation only",
-      "Antibiotics only",
-      "None"
-    ],
-    "answer": 0,
-    "exp": "Heat and chemicals is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Optochin sensitivity is used to identify:",
-    "options": [
-      "Streptococcus pyogenes",
-      "Streptococcus pneumoniae",
-      "Staphylococcus aureus",
-      "Neisseria meningitidis"
-    ],
-    "answer": 1,
-    "exp": "Use classic bench tests (Gram, catalase/coagulase, oxidase, etc.) to differentiate common pathogens."
-  },
-  {
-    "q": "The causative agent of syphilis is:",
-    "options": [
-      "Treponema pallidum",
-      "Borrelia burgdorferi",
-      "Leptospira interrogans",
-      "Chlamydia trachomatis"
-    ],
-    "answer": 0,
-    "exp": "Treponema pallidum is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Ziehl-Neelsen stain is used to detect:",
-    "options": [
-      "Gram-negative bacteria",
-      "Acid-fast bacilli",
-      "Spores",
-      "Capsules"
-    ],
-    "answer": 1,
-    "exp": "Acid-fast bacilli is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "The medium used for culture of Vibrio cholerae is:",
-    "options": [
-      "MacConkey agar",
-      "TCBS agar",
-      "Blood agar",
-      "Chocolate agar"
-    ],
-    "answer": 1,
-    "exp": "TCBS agar is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "Catalase test differentiates:",
-    "options": [
-      "Staphylococcus from Streptococcus",
-      "E. coli from Klebsiella",
-      "Salmonella from Shigella",
-      "Neisseria from Moraxella"
-    ],
-    "answer": 0,
-    "exp": "Use classic bench tests (Gram, catalase/coagulase, oxidase, etc.) to differentiate common pathogens."
-  },
-  {
-    "q": "Coagulase-positive staphylococcus is:",
-    "options": [
-      "Staphylococcus epidermidis",
-      "Staphylococcus saprophyticus",
-      "Staphylococcus aureus",
-      "None"
+      "Acute lymphoblastic leukemia",
+      "Chronic lymphocytic leukemia",
+      "Acute myeloid leukemia",
+      "Myelofibrosis"
     ],
     "answer": 2,
-    "exp": "Use classic bench tests (Gram, catalase/coagulase, oxidase, etc.) to differentiate common pathogens."
+    "exp": "Auer rods, cytoplasmic inclusions of fused lysosomes, are specific to acute myeloid leukemia (AML), particularly subtypes with myeloid differentiation. They are not seen in ALL, CLL, or myelofibrosis."
   },
   {
-    "q": "Weil-Felix reaction is used in the diagnosis of:",
+    "q": "Which coagulation factor is vitamin K-independent?\"",
     "options": [
-      "Syphilis",
-      "Typhus",
-      "Tuberculosis",
-      "Malaria"
+      "Factor VII",
+      "Factor IX",
+      "Factor II",
+      "Factor VIII"
     ],
-    "answer": 1,
-    "exp": "Typhus is correct based on the key laboratory/physiology principle tested in the stem."
+    "answer": 3,
+    "exp": "Factor VIII is not vitamin K-dependent, unlike Factors II, VII, IX, and X, which are synthesized in the liver and require vitamin K for gamma-carboxylation. Factor VIII is a cofactor in the intrinsic pathway."
   },
   {
-    "q": "Leprosy is caused by:",
+    "q": "Which test best differentiates megaloblastic from non-megaloblastic macrocytic anemia?\"",
     "options": [
-      "Mycobacterium leprae",
-      "Mycobacterium tuberculosis",
-      "Treponema pallidum",
-      "Corynebacterium diphtheriae"
+      "Reticulocyte count",
+      "Serum folate",
+      "Peripheral smear",
+      "Bone marrow examination"
+    ],
+    "answer": 3,
+    "exp": "Bone marrow examination showing megaloblasts and hypersegmented neutrophils is the gold standard for confirming megaloblastic anemia (due to B12/folate deficiency). Peripheral smear may suggest it, but marrow confirms the diagnosis."
+  },
+  {
+    "q": "The gold standard test for diagnosis of sickle cell anemia is:\"",
+    "options": [
+      "Sickling test",
+      "Peripheral smear",
+      "Hemoglobin electrophoresis",
+      "Osmotic fragility test"
+    ],
+    "answer": 2,
+    "exp": "Hemoglobin electrophoresis definitively diagnoses sickle cell anemia by detecting HbS. Sickling tests are less specific, peripheral smears show sickle cells but are not confirmatory, and osmotic fragility is not relevant."
+  },
+  {
+    "q": "Which of the following is a common cause of thrombotic thrombocytopenic purpura (TTP)?\"",
+    "options": [
+      "ADAMTS13 deficiency",
+      "Factor V Leiden mutation",
+      "Protein C deficiency",
+      "Vitamin K deficiency"
     ],
     "answer": 0,
-    "exp": "Mycobacterium leprae is correct based on the key laboratory/physiology principle tested in the stem."
+    "exp": "TTP is caused by ADAMTS13 deficiency, leading to uncleaved von Willebrand factor multimers and microthrombi. Factor V Leiden and protein C deficiency cause thrombophilia but not TTP, and vitamin K deficiency affects clotting factors."
   },
   {
-    "q": "The vector of plague is:",
+    "q": "In disseminated intravascular coagulation (DIC)",
     "options": [
-      "Mosquito",
-      "Housefly",
-      "Rat flea",
-      "Tsetse fly"
+      "which of the following is typically decreased?\"",
+      "Fibrinogen",
+      "D-dimer",
+      "FDP"
     ],
-    "answer": 2,
-    "exp": "Rat flea is correct based on the key laboratory/physiology principle tested in the stem."
+    "answer": 0,
+    "exp": "A"
   },
   {
-    "q": "The spirochete causing Lyme disease is:",
+    "q": "Which of the following RBC morphologies is most characteristic of G6PD deficiency?\"",
     "options": [
-      "Treponema pallidum",
-      "Borrelia burgdorferi",
-      "Leptospira interrogans",
-      "Borrelia recurrentis"
+      "Bite cells and Heinz bodies",
+      "Target cells",
+      "Spherocytes",
+      "Rouleaux formation"
+    ],
+    "answer": 0,
+    "exp": "G6PD deficiency causes oxidative hemolysis, leading to Heinz bodies (denatured hemoglobin) and bite cells (RBCs with “bites” removed by splenic pitting). Target cells are seen in hemoglobinopathies, spherocytes in AIHA/HS, and rouleaux in myeloma."
+  },
+  {
+    "q": "Which bone marrow finding is most specific for multiple myeloma?\"",
+    "options": [
+      "Plasma cell hyperplasia",
+      "Reed-Sternberg cells",
+      "Megaloblastic changes",
+      "Increased reticulin"
+    ],
+    "answer": 0,
+    "exp": "Plasma cell hyperplasia (>10-20% clonal plasma cells) is the hallmark of multiple myeloma. Reed-Sternberg cells are seen in Hodgkin lymphoma, megaloblastic changes in B12/folate deficiency, and increased reticulin in myelofibrosis."
+  },
+  {
+    "q": "Which of the following is true of HbA1c measurement?\"",
+    "options": [
+      "Affected by hemolytic anemia",
+      "Unaffected by RBC lifespan",
+      "Reflects glucose levels for 6 months",
+      "Preferred in acute diabetes diagnosis"
+    ],
+    "answer": 0,
+    "exp": "HbA1c is affected by hemolytic anemia, as reduced RBC lifespan lowers HbA1c values. It reflects glucose levels over 2-3 months, not 6, and is not used for acute diabetes diagnosis."
+  },
+  {
+    "q": "Which laboratory test is most sensitive for monitoring warfarin therapy?\"",
+    "options": [
+      "aPTT",
+      "PT/INR",
+      "Thrombin time",
+      "Platelet function assay"
     ],
     "answer": 1,
-    "exp": "Borrelia burgdorferi is correct based on the key laboratory/physiology principle tested in the stem."
-  },
-  {
-    "q": "KOH mount is useful in detection of:",
-    "options": [
-      "Bacteria",
-      "Parasites",
-      "Fungi",
-      "Viruses"
-    ],
-    "answer": 2,
-    "exp": "Fungi is correct based on the key laboratory/physiology principle tested in the stem."
+    "exp": "Warfarin inhibits vitamin K-dependent factors (II, VII, IX, X), prolonging PT/INR, which is the most sensitive test for monitoring its therapeutic effect. aPTT is less affected, thrombin time assesses fibrinogen, and platelet function is unrelated."
   }
-];
+];;
 
 
   function shuffle(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
